@@ -56,12 +56,12 @@ public class PlayerContoller : MonoBehaviour
         // 회전 값 초과시 회전 값 처리 if문
         if(cameraOffset.eulerAngles.x > 45f && cameraOffset.eulerAngles.x < 180f) // 최대 값 초과시
         {
-            cameraOffset.rotation = Quaternion.Euler(maxVertical, cameraOffset.eulerAngles.y, cameraOffset.eulerAngles.z);
+            cameraOffset.rotation = Quaternion.Euler(maxVertical, cameraOffset.eulerAngles.y, 0f);
         }
         else if (cameraOffset.eulerAngles.x < 360f - maxVertical && cameraOffset.eulerAngles.x > 180f) // 최소 값 초과 시 
         {
             //음수 값이 아닌 360부터 계산됨
-            cameraOffset.rotation = Quaternion.Euler(360f - maxVertical, cameraOffset.eulerAngles.y, cameraOffset.eulerAngles.z);
+            cameraOffset.rotation = Quaternion.Euler(360f - maxVertical, cameraOffset.eulerAngles.y, 0f);
         }
     }
 

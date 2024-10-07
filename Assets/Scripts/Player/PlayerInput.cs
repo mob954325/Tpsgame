@@ -28,6 +28,11 @@ public class PlayerInput : MonoBehaviour
     /// </summary>
     bool isJump = false;
 
+    /// <summary>
+    /// 사격키 누름 여부 변수
+    /// </summary>
+    bool isShot = false;
+
     // unity ====================================
 
     private void Awake()
@@ -38,18 +43,18 @@ public class PlayerInput : MonoBehaviour
     private void OnEnable()
     {
         inputActions.Player.Enable();
-        Initialize_Move();
+        Initialize_PlayerAction();
     }
 
     private void OnDisable()
     {
-        Initialize_Move_Remove();
+        PlayerAction_Remove();
         inputActions.Player.Disable();
     }
 
     // initialize ====================================
 
-    private void Initialize_Move()
+    private void Initialize_PlayerAction()
     {
         inputActions.Player.Move.performed += OnMoveInput;
         inputActions.Player.Move.canceled += OnMoveInput;
@@ -59,9 +64,11 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.Sprint.canceled += OnSprintInput;
         inputActions.Player.Jump.performed += OnJumpInput;
         inputActions.Player.Jump.canceled += OnJumpInput;
+        inputActions.Player.Shot.performed += OnShotInput;
+        inputActions.Player.Shot.canceled += OnShotInput;
     }
 
-    private void Initialize_Move_Remove()
+    private void PlayerAction_Remove()
     {
         inputActions.Player.Move.performed -= OnMoveInput;
         inputActions.Player.Move.canceled -= OnMoveInput;
@@ -71,6 +78,8 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.Sprint.canceled -= OnSprintInput;
         inputActions.Player.Jump.performed -= OnJumpInput;
         inputActions.Player.Jump.canceled -= OnJumpInput;
+        inputActions.Player.Shot.performed -= OnShotInput;
+        inputActions.Player.Shot.canceled -= OnShotInput;
     }
 
     // Input ====================================
@@ -109,6 +118,18 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    private void OnShotInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            isShot = true;
+        }
+        else
+        {
+            isShot = false;
+        }
+    }
+
     /// <summary>
     /// 움직임 입력 값을 반환하는 함수
     /// </summary>
@@ -143,5 +164,14 @@ public class PlayerInput : MonoBehaviour
     public bool GetJumpPressValue()
     {
         return isJump;
+    }
+
+    /// <summary>
+    /// 사격 입력값 반환 함수(LM)
+    /// </summary>
+    /// <returns>눌렀으면 true 아니면 false</returns>
+    public bool GetShotPressValue()
+    {
+        return isShot;
     }
 }

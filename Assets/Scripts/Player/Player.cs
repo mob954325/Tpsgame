@@ -71,6 +71,7 @@ public class Player : MonoBehaviour
     {
         OnPlayerMove();
         OnPlayerJump();
+        OnPlayerShot();
     }
 
     private void LateUpdate()
@@ -137,6 +138,9 @@ public class Player : MonoBehaviour
 
     private void OnPlayerJump()
     {
+        if (!completedInitialize)
+            return;
+
         bool isGround = contoller.GetIsGroundValue();
 
         if (input.GetJumpPressValue() && isGround)
@@ -146,5 +150,16 @@ public class Player : MonoBehaviour
         }
 
         anim.SetIsGround(isGround);
+    }
+
+    private void OnPlayerShot()
+    {
+        if (!completedInitialize)
+            return;
+
+        if (input.GetShotPressValue())
+        {
+            anim.TriggerOnShot();
+        }
     }
 }

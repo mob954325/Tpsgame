@@ -39,6 +39,11 @@ public class PlayerAnimation : MonoBehaviour
     /// </summary>
     int HashToOnJump = Animator.StringToHash("onJump");
 
+    /// <summary>
+    /// 사격 트리거 애니메이션 파라미터
+    /// </summary>
+    int HashToOnShot = Animator.StringToHash("onShot");
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -96,5 +101,10 @@ public class PlayerAnimation : MonoBehaviour
     public void TriggerOnJump()
     {
         anim.SetTrigger(HashToOnJump);
+    }
+
+    public void TriggerOnShot()
+    {
+        anim.SetTrigger(HashToOnShot);
     }
 }
