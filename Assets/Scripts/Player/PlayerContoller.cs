@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerContoller : MonoBehaviour
 {
     private Rigidbody rb;
     private Transform cameraOffset;
+    [SerializeField] private CinemachineVirtualCamera vCam;
 
     private const float maxVertical = 45f;
+    private const float zoomValue = 1f;
+    private const float nonZoomValue = 3f;
 
     /// <summary>
     /// 땅에 닿았는지 확인하는 변수 (false = 점프 중, true = 지상)
@@ -49,7 +53,6 @@ public class PlayerContoller : MonoBehaviour
         // 좌우 바라보기
         rb.MoveRotation(Quaternion.Euler(transform.eulerAngles + input.x * Vector3.up * Time.fixedDeltaTime));
 
-
         // 위 아래 바라보기 (카메라만 회전)
         cameraOffset.rotation *= Quaternion.AngleAxis(input.y * Time.fixedDeltaTime, Vector3.left);
 
@@ -75,6 +78,24 @@ public class PlayerContoller : MonoBehaviour
         rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
     }
 
+    public void OnZoom(bool isZoom)
+    {
+        Cinemachine3rdPersonFollow vCamBody = vCam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
+
+        if(isZoom)
+        {
+            vCamBody.CameraDistance = zoomValue;
+        }
+        else
+        {
+            vCamBody.CameraDistance = nonZoomValue;
+        }
+    }
+
+    /// <summary>
+    /// isGround 반환 함수 (땅에 닿았는지 확인)
+    /// </summary>
+    /// <returns>isGround 값</returns>
     public bool GetIsGroundValue()
     {
         return isGround;

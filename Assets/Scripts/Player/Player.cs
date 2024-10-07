@@ -72,6 +72,7 @@ public class Player : MonoBehaviour
         OnPlayerMove();
         OnPlayerJump();
         OnPlayerShot();
+        OnPlayerZoomIn();
     }
 
     private void LateUpdate()
@@ -161,5 +162,14 @@ public class Player : MonoBehaviour
         {
             anim.TriggerOnShot();
         }
+    }
+
+    private void OnPlayerZoomIn()
+    {
+        if (!completedInitialize)
+            return;
+
+        bool isZoom = input.GetZoomPressValue();
+        contoller.OnZoom(isZoom);
     }
 }

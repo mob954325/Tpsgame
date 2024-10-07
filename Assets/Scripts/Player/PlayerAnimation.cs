@@ -103,6 +103,9 @@ public class PlayerAnimation : MonoBehaviour
         anim.SetTrigger(HashToOnJump);
     }
 
+    /// <summary>
+    /// 애니메이션 사격 트리거 작동 함수
+    /// </summary>
     public void TriggerOnShot()
     {
         anim.SetTrigger(HashToOnShot);

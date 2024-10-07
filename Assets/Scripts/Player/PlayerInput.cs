@@ -33,6 +33,11 @@ public class PlayerInput : MonoBehaviour
     /// </summary>
     bool isShot = false;
 
+    /// <summary>
+    /// 조준 누름 여부 변수
+    /// </summary>
+    bool isZoomin = false;
+
     // unity ====================================
 
     private void Awake()
@@ -66,6 +71,8 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.Jump.canceled += OnJumpInput;
         inputActions.Player.Shot.performed += OnShotInput;
         inputActions.Player.Shot.canceled += OnShotInput;
+        inputActions.Player.ZoomIn.performed += OnZoomInput;
+        inputActions.Player.ZoomIn.canceled += OnZoomInput;
     }
 
     private void PlayerAction_Remove()
@@ -80,6 +87,8 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.Jump.canceled -= OnJumpInput;
         inputActions.Player.Shot.performed -= OnShotInput;
         inputActions.Player.Shot.canceled -= OnShotInput;
+        inputActions.Player.ZoomIn.performed += OnZoomInput;
+        inputActions.Player.ZoomIn.canceled += OnZoomInput;
     }
 
     // Input ====================================
@@ -130,6 +139,18 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    private void OnZoomInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            isZoomin = true;
+        }
+        else
+        {
+            isZoomin = false;
+        }
+    }
+
     /// <summary>
     /// 움직임 입력 값을 반환하는 함수
     /// </summary>
@@ -173,5 +194,14 @@ public class PlayerInput : MonoBehaviour
     public bool GetShotPressValue()
     {
         return isShot;
+    }
+
+    /// <summary>
+    /// 조준 입력값 반환 함수
+    /// </summary>
+    /// <returns>눌렀으면 true 아니면 false</returns>
+    public bool GetZoomPressValue()
+    {
+        return isZoomin;
     }
 }
