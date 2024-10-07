@@ -9,19 +9,24 @@ public class PlayerInput : MonoBehaviour
     PlayerInputActions inputActions;
 
     /// <summary>
-    /// ¿òÁ÷ÀÓ º¤ÅÍ°ª
+    /// ì›€ì§ì„ ë²¡í„°ê°’
     /// </summary>
     Vector2 moveVec;
 
     /// <summary>
-    /// ¸¶¿ì½º º¤ÅÍ
+    /// ë§ˆìš°ìŠ¤ ë²¡í„°
     /// </summary>
     Vector2 loockVec;
 
     /// <summary>
-    /// ½ºÇÁ¸°Æ® È®ÀÎ º¯¼ö
+    /// ìŠ¤í”„ë¦°íŠ¸ í™•ì¸ ë³€ìˆ˜
     /// </summary>
     bool isSprint = false;
+
+    /// <summary>
+    /// ì í”„í‚¤ ëˆ„ë¦„ ì—¬ë¶€ ë³€ìˆ˜
+    /// </summary>
+    bool isJump = false;
 
     // unity ====================================
 
@@ -39,6 +44,7 @@ public class PlayerInput : MonoBehaviour
     private void OnDisable()
     {
         Initialize_Move_Remove();
+        inputActions.Player.Disable();
     }
 
     // initialize ====================================
@@ -51,8 +57,9 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.Look.canceled += OnLookInput;
         inputActions.Player.Sprint.performed += OnSprintInput;
         inputActions.Player.Sprint.canceled += OnSprintInput;
+        inputActions.Player.Jump.performed += OnJumpInput;
+        inputActions.Player.Jump.canceled += OnJumpInput;
     }
-
 
     private void Initialize_Move_Remove()
     {
@@ -62,6 +69,8 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.Look.canceled -= OnLookInput;
         inputActions.Player.Sprint.performed -= OnSprintInput;
         inputActions.Player.Sprint.canceled -= OnSprintInput;
+        inputActions.Player.Jump.performed -= OnJumpInput;
+        inputActions.Player.Jump.canceled -= OnJumpInput;
     }
 
     // Input ====================================
@@ -88,30 +97,51 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    private void OnJumpInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            isJump = true;
+        }
+        else
+        {
+            isJump = false;
+        }
+    }
+
     /// <summary>
-    /// ¿òÁ÷ÀÓ ÀÔ·Â °ªÀ» ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+    /// ì›€ì§ì„ ì…ë ¥ ê°’ì„ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <returns>¿òÁ÷ÀÓ ÀÔ·Â °ª</returns>
+    /// <returns>ì›€ì§ì„ ì…ë ¥ ê°’</returns>
     public Vector2 GetMoveVector()
     {
         return moveVec;
     }
 
     /// <summary>
-    /// ¸¶¿ì½º ÀÔ·Â °ªÀ» º¯È¯ÇÏ´Â ÇÔ¼ö
+    /// ë§ˆìš°ìŠ¤ ì…ë ¥ ê°’ì„ ë³€í™˜í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <returns>¸¶¿ì½º ÀÔ·Â °ª</returns>
+    /// <returns>ë§ˆìš°ìŠ¤ ì…ë ¥ ê°’</returns>
     public Vector2 GetLookVector()
     {
         return loockVec;
     }
 
     /// <summary>
-    /// ½ºÇÁ¸°Æ® ÀÔ·Â ¹İÈ¯ º¯¼ö (LShift)
+    /// ìŠ¤í”„ë¦°íŠ¸ ì…ë ¥ ë°˜í™˜ ë³€ìˆ˜ (LShift)
     /// </summary>
-    /// <returns>LShift ´©¸§ ¿©ºÎ(´­·¶À¸¸é true ¾Æ´Ï¸é false)</returns>
+    /// <returns>LShift ëˆ„ë¦„ ì—¬ë¶€(ëˆŒë €ìœ¼ë©´ true ì•„ë‹ˆë©´ false)</returns>
     public bool GetSprintValue()
     {
         return isSprint;
+    }
+
+    /// <summary>
+    /// ì í”„ ì…ë ¥ê°’ ë°˜í™˜ í•¨ìˆ˜ (Space)
+    /// </summary>
+    /// <returns>ëˆŒë €ìœ¼ë©´ true ì•„ë‹ˆë©´ false</returns>
+    public bool GetJumpPressValue()
+    {
+        return isJump;
     }
 }

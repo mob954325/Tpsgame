@@ -11,23 +11,38 @@ public class Player : MonoBehaviour
     private PlayerContoller contoller;
     private PlayerAnimation anim;
 
+    /// <summary>
+    /// ì›€ì§ì„ ì†ë„
+    /// </summary>
     public float movePower = 5f;
+
+    /// <summary>
+    /// ì í”„ë ¥
+    /// </summary>
+    public float jumpPower = 5f;
+
+    /// <summary>
+    /// ë³´ê¸° ê°ë„
+    /// </summary>
     public float sensitivity = 5f;
 
+    /// <summary>
+    /// ë‹¬ë¦¬ê¸° ì´ë™ì†ë„ ì¦ê°€ ë°°ìœ¨
+    /// </summary>
     public float sprintRatio = 1.2f;
 
     /// <summary>
-    /// ÃÊ±âÈ­ È®ÀÎ ÇÔ¼ö
+    /// ì´ˆê¸°í™” í™•ì¸ í•¨ìˆ˜
     /// </summary>
     private bool completedInitialize = false;
 
     /// <summary>
-    /// ¸¶¿ì½º ¶ô ¿©ºÎ (true : È­¸é ¶ô, false : ¶ô ÇØÁ¦)
+    /// ë§ˆìš°ìŠ¤ ë½ ì—¬ë¶€ (true : í™”ë©´ ë½, false : ë½ í•´ì œ)
     /// </summary>
     private bool mouseLock = false;
 
     /// <summary>
-    /// ¸¶¿ì½º ¶ô Á¢±Ù ¹× ¼öÁ¤ ÇÁ·ÎÆÛÆ¼
+    /// ë§ˆìš°ìŠ¤ ë½ ì ‘ê·¼ ë° ìˆ˜ì • í”„ë¡œí¼í‹°
     /// </summary>
     public bool MouseLock
     {
@@ -55,6 +70,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         OnPlayerMove();
+        OnPlayerJump();
     }
 
     private void LateUpdate()
@@ -63,7 +79,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Player ÃÊ±âÈ­ ÇÔ¼ö
+    /// Player ì´ˆê¸°í™” í•¨ìˆ˜
     /// </summary>
     private void Init()
     {
@@ -71,7 +87,7 @@ public class Player : MonoBehaviour
         contoller = GetComponent<PlayerContoller>();
         anim = GetComponent<PlayerAnimation>();
 
-        // ÃÊ±âÈ­ È®ÀÎ
+        // ì´ˆê¸°í™” í™•ì¸
         if(input == null || contoller == null)
         {
             completedInitialize = false;
@@ -86,27 +102,30 @@ public class Player : MonoBehaviour
     // Player input =====================================
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ ÇÔ¼ö (Update)
+    /// í”Œë ˆì´ì–´ ì›€ì§ì„ í•¨ìˆ˜ (Update)
     /// </summary>
     private void OnPlayerMove()
     {
         if(!completedInitialize) 
             return;
 
-        if(anim.SetSprintParam(input.GetSprintValue()))
+        Vector2 moveVec = input.GetMoveVector();
+
+        // ì›€ì§ì„ ì²˜ë¦¬
+        if(anim.SetSprintParam(input.GetSprintValue())) // ë‹¬ë¦¬ê¸° ì¤‘ì´ë©´ 
         {
-            contoller.OnMove(input.GetMoveVector() * movePower * sprintRatio);
+            contoller.OnMove(moveVec * movePower * sprintRatio); // ì¦ê°€ ë¹„ìœ¨ ê°’ ë§Œí¼ ì†ë„ ì˜¬ë¦¬ê¸°
         }
         else
         {
-            contoller.OnMove(input.GetMoveVector() * movePower);
+            contoller.OnMove(moveVec * movePower);
         }
 
-        anim.SetMoveParam(input.GetMoveVector().x, input.GetMoveVector().y);
+        anim.SetMoveParam(moveVec.x, moveVec.y);   
      }
 
     /// <summary>
-    /// Ä«¸Ş¶ó È¸Àü ÇÔ¼ö (Late)
+    /// ì¹´ë©”ë¼ íšŒì „ í•¨ìˆ˜ (Late)
     /// </summary>
     private void OnPlayerLook()
     {
@@ -114,5 +133,18 @@ public class Player : MonoBehaviour
             return;
 
         contoller.OnLook(input.GetLookVector() * sensitivity);
+    }
+
+    private void OnPlayerJump()
+    {
+        bool isGround = contoller.GetIsGroundValue();
+
+        if (input.GetJumpPressValue() && isGround)
+        {
+            anim.TriggerOnJump();
+            contoller.OnJump(jumpPower);
+        }
+
+        anim.SetIsGround(isGround);
     }
 }

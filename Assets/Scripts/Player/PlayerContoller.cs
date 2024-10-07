@@ -10,43 +10,73 @@ public class PlayerContoller : MonoBehaviour
 
     private const float maxVertical = 45f;
 
+    /// <summary>
+    /// ë•…ì— ë‹¿ì•˜ëŠ”ì§€ í™•ì¸í•˜ëŠ” ë³€ìˆ˜ (false = ì í”„ ì¤‘, true = ì§€ìƒ)
+    /// </summary>
+    private bool isGround = true;
+
+    // ìœ ë‹ˆí‹° í•¨ìˆ˜ ================================================================
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         cameraOffset = transform.GetChild(0);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!isGround) isGround = true; // ë•…ì— ë‹¿ìœ¼ë©´ isGround ê°’ ë³€ê²½
+    }
+
+
+    // ì»¨íŠ¸ë¡¤ í•¨ìˆ˜ ================================================================
+
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ ÇÔ¼ö
+    /// í”Œë ˆì´ì–´ ì›€ì§ì„ í•¨ìˆ˜
     /// </summary>
-    /// <param name="input">¿òÁ÷ÀÓ º¤ÅÍ °ª</param>
+    /// <param name="input">ì›€ì§ì„ ë²¡í„° ê°’</param>
     public void OnMove(Vector2 input)
     {
         rb.MovePosition((transform.forward * input.y + transform.right * input.x) * Time.fixedDeltaTime + transform.position);
     }
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î ¸¶¿ì½º ¿òÁ÷ÀÓ ÇÔ¼ö
+    /// í”Œë ˆì´ì–´ ë§ˆìš°ìŠ¤ ì›€ì§ì„ í•¨ìˆ˜
     /// </summary>
-    /// <param name="input">¸¶¿ì½º ¿òÁ÷ÀÓ º¤ÅÍ</param>
+    /// <param name="input">ë§ˆìš°ìŠ¤ ì›€ì§ì„ ë²¡í„°</param>
     public void OnLook(Vector2 input)
     {
-        // ÁÂ¿ì ¹Ù¶óº¸±â
+        // ì¢Œìš° ë°”ë¼ë³´ê¸°
         rb.MoveRotation(Quaternion.Euler(transform.eulerAngles + input.x * Vector3.up * Time.fixedDeltaTime));
 
 
-        // À§ ¾Æ·¡ ¹Ù¶óº¸±â (Ä«¸Ş¶ó¸¸ È¸Àü)
+        // ìœ„ ì•„ë˜ ë°”ë¼ë³´ê¸° (ì¹´ë©”ë¼ë§Œ íšŒì „)
         cameraOffset.rotation *= Quaternion.AngleAxis(input.y * Time.fixedDeltaTime, Vector3.left);
 
-        // È¸Àü °ª ÃÊ°ú½Ã È¸Àü °ª Ã³¸® if¹®
-        if(cameraOffset.eulerAngles.x > 45f && cameraOffset.eulerAngles.x < 180f) // ÃÖ´ë °ª ÃÊ°ú½Ã
+        // íšŒì „ ê°’ ì´ˆê³¼ì‹œ íšŒì „ ê°’ ì²˜ë¦¬ ifë¬¸
+        if(cameraOffset.eulerAngles.x > 45f && cameraOffset.eulerAngles.x < 180f) // ìµœëŒ€ ê°’ ì´ˆê³¼ì‹œ
         {
             cameraOffset.rotation = Quaternion.Euler(maxVertical, cameraOffset.eulerAngles.y, cameraOffset.eulerAngles.z);
         }
-        else if (cameraOffset.eulerAngles.x < 360f - maxVertical && cameraOffset.eulerAngles.x > 180f) // ÃÖ¼Ò °ª ÃÊ°ú ½Ã 
+        else if (cameraOffset.eulerAngles.x < 360f - maxVertical && cameraOffset.eulerAngles.x > 180f) // ìµœì†Œ ê°’ ì´ˆê³¼ ì‹œ 
         {
-            //À½¼ö °ªÀÌ ¾Æ´Ñ 360ºÎÅÍ °è»êµÊ
+            //ìŒìˆ˜ ê°’ì´ ì•„ë‹Œ 360ë¶€í„° ê³„ì‚°ë¨
             cameraOffset.rotation = Quaternion.Euler(360f - maxVertical, cameraOffset.eulerAngles.y, cameraOffset.eulerAngles.z);
         }
+    }
+
+    /// <summary>
+    /// ì í”„ ì‹œ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
+    /// </summary>
+    /// <param name="jumpPower">ì í”„ë ¥</param>
+    public void OnJump(float jumpPower)
+    {
+        isGround = false;
+        rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+    }
+
+    public bool GetIsGroundValue()
+    {
+        return isGround;
     }
 }

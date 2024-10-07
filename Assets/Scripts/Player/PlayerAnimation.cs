@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Animations;
+using static UnityEngine.Rendering.DebugUI;
 
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimation : MonoBehaviour
@@ -9,19 +10,34 @@ public class PlayerAnimation : MonoBehaviour
     private Animator anim;
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î xÁÂÇ¥ °ª ¾Ö´Ï¸ŞÀÌ¼Ç ÆÄ¶ó¹ÌÅÍ
+    /// í”Œë ˆì´ì–´ xì¢Œí‘œ ê°’ ì• ë‹ˆë©”ì´ì…˜ íŒŒë¼ë¯¸í„°
     /// </summary>
     int HashToMove_x = Animator.StringToHash("move_x");
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î yÁÂÇ¥ °ª ¾Ö´Ï¸ŞÀÌ¼Ç ÆÄ¶ó¹ÌÅÍ
+    /// í”Œë ˆì´ì–´ yì¢Œí‘œ ê°’ ì• ë‹ˆë©”ì´ì…˜ íŒŒë¼ë¯¸í„°
     /// </summary>
     int HashToMove_y = Animator.StringToHash("move_y");
 
     /// <summary>
-    /// ½ºÇÁ¸°Æ® ¿©ºÎ ¾Ö´Ï¸ŞÀÌ¼Ç ÆÄ¶ó¹ÌÅÍ
+    /// ìŠ¤í”„ë¦°íŠ¸ ì—¬ë¶€ ì• ë‹ˆë©”ì´ì…˜ íŒŒë¼ë¯¸í„°
     /// </summary>
     int HashToSprint = Animator.StringToHash("isSprint");
+
+    /// <summary>
+    /// ì´ë™ ì—¬ë¶€ ì• ë‹ˆë©”ì´ì…˜ íŒŒë¼ë¯¸í„°
+    /// </summary>
+    int HashToMove = Animator.StringToHash("isMove");
+
+    /// <summary>
+    /// í˜„ì¬ ë•…ì— ë‹¿ì•˜ëŠ”ì§€ í™•ì¸ ì• ë‹ˆë©”ì´ì…˜ íŒŒë¼ë¯¸í„°
+    /// </summary>
+    int HashToIsGround = Animator.StringToHash("isGround");
+
+    /// <summary>
+    /// ì í”„ íŠ¸ë¦¬ê±° ì• ë‹ˆë©”ì´ì…˜ íŒŒë¼ë¯¸í„°
+    /// </summary>
+    int HashToOnJump = Animator.StringToHash("onJump");
 
     private void Awake()
     {
@@ -29,26 +45,56 @@ public class PlayerAnimation : MonoBehaviour
     }
 
     /// <summary>
-    /// ¾Ö´Ï¸ŞÀÌ¼Ç ¿òÁ÷ÀÓ ÆÄ¶ó¹ÌÅÍ ¼³Á¤ ÇÔ¼ö
+    /// ì• ë‹ˆë©”ì´ì…˜ ì›€ì§ì„ íŒŒë¼ë¯¸í„° ì„¤ì • í•¨ìˆ˜
     /// </summary>
-    /// <param name="x">x °ª ÆÄ¶ó¹ÌÅÍ</param>
-    /// <param name="y">y °ª ÆÄ¶ó¹ÌÅÍ</param>
+    /// <param name="x">x ê°’ íŒŒë¼ë¯¸í„°</param>
+    /// <param name="y">y ê°’ íŒŒë¼ë¯¸í„°</param>
     public Vector2 SetMoveParam(float x, float y)
     {
-        anim.SetFloat(HashToMove_x, x);
-        anim.SetFloat(HashToMove_y, y);
+        // ì›€ì§ì„ ì—¬ë¶€ íŒŒë¼ë¯¸í„° ë³€ê²½
+        if(x != 0 || y != 0)
+        {
+            anim.SetBool(HashToMove, true);
+        }
+        else
+        {
+            anim.SetBool(HashToMove, false);
+        }
+
+        // x, y íŒŒë¦¬ë¯¸í„° ë³€ê²½
+        anim.SetFloat(HashToMove_x, x, 0.1f, Time.deltaTime);
+        anim.SetFloat(HashToMove_y, y, 0.1f, Time.deltaTime);
 
         return new Vector2(x, y);
     }
 
     /// <summary>
-    /// ¾Ö´Ï¸ŞÀÌ¼Ç ½ºÇÁ¸°Æ® ÆÄ¶ó¹ÌÅÍ ¼³Á¤ ÇÔ¼ö
+    /// ì• ë‹ˆë©”ì´ì…˜ ìŠ¤í”„ë¦°íŠ¸ íŒŒë¼ë¯¸í„° ì„¤ì • í•¨ìˆ˜
     /// </summary>
-    /// <param name="value">bool °ª</param>
+    /// <param name="value">bool ê°’</param>
     public bool SetSprintParam(bool value)
     {
         anim.SetBool(HashToSprint, value);
 
         return value;
+    }
+
+    /// <summary>
+    /// ì• ë‹ˆë©”ì´ì…˜ isGround íŒŒë¼ë¯¸í„° ì„¤ì • í•¨ìˆ˜
+    /// </summary>
+    /// <param name="value">bool ê°’</param>
+    public bool SetIsGround(bool value)
+    {
+        anim.SetBool(HashToIsGround, value);
+
+        return value;
+    }
+
+    /// <summary>
+    /// ì• ë‹ˆë©”ì´ì…˜ ì í”„ íŠ¸ë¦¬ê±° ì‘ë™ í•¨ìˆ˜
+    /// </summary>
+    public void TriggerOnJump()
+    {
+        anim.SetTrigger(HashToOnJump);
     }
 }
