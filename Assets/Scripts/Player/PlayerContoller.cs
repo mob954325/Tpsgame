@@ -27,6 +27,11 @@ public class PlayerContoller : MonoBehaviour
         cameraOffset = transform.GetChild(0);
     }
 
+    private void Start()
+    {
+        cameraOffset.eulerAngles = Vector3.zero; // 카메라 오프셋 회전값 초기화
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (!isGround) isGround = true; // 땅에 닿으면 isGround 값 변경
@@ -57,7 +62,7 @@ public class PlayerContoller : MonoBehaviour
         cameraOffset.rotation *= Quaternion.AngleAxis(input.y * Time.fixedDeltaTime, Vector3.left);
 
         // 회전 값 초과시 회전 값 처리 if문
-        if(cameraOffset.eulerAngles.x > 45f && cameraOffset.eulerAngles.x < 180f) // 최대 값 초과시
+        if (cameraOffset.eulerAngles.x > 45f && cameraOffset.eulerAngles.x < 180f) // 최대 값 초과시
         {
             cameraOffset.rotation = Quaternion.Euler(maxVertical, cameraOffset.eulerAngles.y, 0f);
         }
@@ -82,7 +87,7 @@ public class PlayerContoller : MonoBehaviour
     {
         Cinemachine3rdPersonFollow vCamBody = vCam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
 
-        if(isZoom)
+        if (isZoom)
         {
             vCamBody.CameraDistance = zoomValue;
         }

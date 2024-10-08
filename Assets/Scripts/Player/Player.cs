@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+
 [RequireComponent(typeof(PlayerInput), typeof(PlayerContoller), typeof(PlayerAnimation))]
 public class Player : MonoBehaviour
 {
@@ -34,7 +36,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 초기화 확인 함수
     /// </summary>
-    private bool completedInitialize = false;
+    [SerializeField] private bool completedInitialize = false;
 
     /// <summary>
     /// 마우스 락 여부 (true : 화면 락, false : 락 해제)
@@ -77,7 +79,7 @@ public class Player : MonoBehaviour
 
     private void LateUpdate()
     {
-        OnPlayerLook();        
+        OnPlayerLook();
     }
 
     /// <summary>
@@ -90,14 +92,14 @@ public class Player : MonoBehaviour
         anim = GetComponent<PlayerAnimation>();
 
         // 초기화 확인
-        if(input == null || contoller == null)
+        if (input == null || contoller == null)
         {
             completedInitialize = false;
         }
         else
         {
             MouseLock = true;
-            completedInitialize = true;
+            //completedInitialize = true;
         }
     }
 
@@ -108,13 +110,13 @@ public class Player : MonoBehaviour
     /// </summary>
     private void OnPlayerMove()
     {
-        if(!completedInitialize) 
+        if (!completedInitialize)
             return;
 
         Vector2 moveVec = input.GetMoveVector();
 
         // 움직임 처리
-        if(anim.SetSprintParam(input.GetSprintValue())) // 달리기 중이면 
+        if (anim.SetSprintParam(input.GetSprintValue())) // 달리기 중이면 
         {
             contoller.OnMove(moveVec * movePower * sprintRatio); // 증가 비율 값 만큼 속도 올리기
         }
@@ -123,8 +125,8 @@ public class Player : MonoBehaviour
             contoller.OnMove(moveVec * movePower);
         }
 
-        anim.SetMoveParam(moveVec.x, moveVec.y);   
-     }
+        anim.SetMoveParam(moveVec.x, moveVec.y);
+    }
 
     /// <summary>
     /// 카메라 회전 함수 (Late)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 public class PlayerInput : MonoBehaviour
 {
     PlayerInputActions inputActions;
@@ -105,7 +106,7 @@ public class PlayerInput : MonoBehaviour
 
     private void OnSprintInput(InputAction.CallbackContext context)
     {
-        if(context.performed)
+        if (context.performed)
         {
             isSprint = true;
         }

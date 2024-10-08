@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Animations;
-using static UnityEngine.Rendering.DebugUI;
+
 
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimation : MonoBehaviour
@@ -57,7 +57,7 @@ public class PlayerAnimation : MonoBehaviour
     public Vector2 SetMoveParam(float x, float y)
     {
         // 움직임 여부 파라미터 변경
-        if(x != 0 || y != 0)
+        if (x != 0 || y != 0)
         {
             anim.SetBool(HashToMove, true);
         }
