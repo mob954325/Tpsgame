@@ -6,7 +6,16 @@ using UnityEngine;
 [RequireComponent(typeof(WeaponController))]
 public class Weapon : MonoBehaviour
 {
+    private Player player;
     private WeaponController controller;
+
+    private void Awake()
+    {
+        player = GetComponentInParent<Player>();
+        controller = GetComponent<WeaponController>();
+
+        player.OnShot += controller.Shot;
+    }
 
     /// <summary>
     /// WeaponController 접근용 프로퍼티

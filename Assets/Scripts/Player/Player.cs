@@ -64,6 +64,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 사격 시 실행되는 델리게이트
+    /// </summary>
+    public Action<bool> OnShot;
+
     private void Awake()
     {
         Init();
@@ -99,7 +104,7 @@ public class Player : MonoBehaviour
         else
         {
             MouseLock = true;
-            //completedInitialize = true;
+            completedInitialize = true;
         }
     }
 
@@ -160,9 +165,11 @@ public class Player : MonoBehaviour
         if (!completedInitialize)
             return;
 
-        if (input.GetShotPressValue())
+        bool pressed = input.GetShotPressValue();
+        if (pressed)
         {
             anim.TriggerOnShot();
+            OnShot?.Invoke(pressed);
         }
     }
 

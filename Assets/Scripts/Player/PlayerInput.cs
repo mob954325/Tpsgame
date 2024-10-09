@@ -14,7 +14,7 @@ public class PlayerInput : MonoBehaviour
     /// </summary>
     Vector2 moveVec;
 
-    /// <summary>
+    /// <summary>`
     /// 마우스 벡터
     /// </summary>
     Vector2 loockVec;
