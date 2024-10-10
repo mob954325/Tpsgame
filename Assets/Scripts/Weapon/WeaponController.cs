@@ -5,6 +5,7 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     private Transform shotTransform;
+    private Transform shotEffect;
 
     /// <summary>
     /// 해당 무기 공격력
@@ -20,7 +21,7 @@ public class WeaponController : MonoBehaviour
     /// <summary>
     /// 사격 속도
     /// </summary>
-    public float fireRate = 1.0f;
+    public float fireRate = 0.3f;
 
     /// <summary>
     /// 사격 가능 여부
@@ -44,6 +45,8 @@ public class WeaponController : MonoBehaviour
     private void Awake()
     {
         shotTransform = transform.GetChild(0);
+        shotEffect = shotTransform.GetChild(0);
+
         CheckCanShot = false;
     }
 
@@ -81,9 +84,17 @@ public class WeaponController : MonoBehaviour
     private IEnumerator ShotDelayCoroutine()
     {
         float timeElapsed = 0f;
-        while(timeElapsed < fireRate)
+        shotEffect.gameObject.SetActive(true);
+
+        while (timeElapsed < fireRate)
         {
-            timeElapsed += Time.deltaTime;
+            timeElapsed += Time.deltaTime;  // 시간 증가
+
+            if(timeElapsed > 0.1f)          // 0.1초 후 사격 이펙트 종료
+            {
+                shotEffect.gameObject.SetActive(false);
+            }
+
             yield return null;
         }
 

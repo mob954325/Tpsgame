@@ -14,7 +14,10 @@ public class Weapon : MonoBehaviour
         player = GetComponentInParent<Player>();
         controller = GetComponent<WeaponController>();
 
-        player.OnShot += controller.Shot;
+        if(player != null) // 임시
+        {
+            player.OnShot += controller.Shot;
+        }
     }
 
     /// <summary>
