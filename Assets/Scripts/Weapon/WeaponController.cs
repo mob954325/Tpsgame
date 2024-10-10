@@ -7,6 +7,12 @@ public class WeaponController : MonoBehaviour
     private Transform shotTransform;
 
     /// <summary>
+    /// 해당 무기 공격력
+    /// </summary>
+    [Tooltip("해당 무기 공격력")]
+    public float damage = 1f;
+
+    /// <summary>
     /// 사격 사거리
     /// </summary>
     public float shotRange = 50f;
@@ -54,13 +60,16 @@ public class WeaponController : MonoBehaviour
 
         if(Physics.Raycast(shotTransform.position, shotTransform.forward, out hit, shotRange, LayerMask.GetMask("Enemy")))
         {
+            // 피격 성공 시 
             Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.yellow);
             Debug.Log("Did Hit");
+
+            IHealth objHealth = hit.transform.GetComponent<Enemy>() as IHealth;
+            objHealth.OnHit(damage);
         }
-        else
+        else // 빗맞춤
         {
             Debug.DrawRay(transform.position, transform.forward * 1000, Color.white);
-            Debug.Log("Did not Hit");
         }
 
         CheckCanShot = false; // 사격 후 사격 비활성화
