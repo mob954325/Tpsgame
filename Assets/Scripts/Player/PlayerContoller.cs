@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEditor.Timeline;
+using UnityEngine.Windows;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerContoller : MonoBehaviour
@@ -10,7 +12,6 @@ public class PlayerContoller : MonoBehaviour
     private Transform cameraOffset;
     [SerializeField] private CinemachineVirtualCamera vCam;
 
-    private const float maxVertical = 45f;
     private const float zoomValue = 1f;
     private const float nonZoomValue = 3f;
 
@@ -27,16 +28,10 @@ public class PlayerContoller : MonoBehaviour
         cameraOffset = transform.GetChild(0);
     }
 
-    private void Start()
-    {
-        cameraOffset.eulerAngles = Vector3.zero; // 카메라 오프셋 회전값 초기화
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (!isGround) isGround = true; // 땅에 닿으면 isGround 값 변경
     }
-
 
     // 컨트롤 함수 ================================================================
 
@@ -56,21 +51,19 @@ public class PlayerContoller : MonoBehaviour
     public void OnLook(Vector2 input)
     {
         // 좌우 바라보기
-        rb.MoveRotation(Quaternion.Euler(transform.eulerAngles + input.x * Vector3.up * Time.fixedDeltaTime));
+        float inputX = input.x * Time.fixedDeltaTime;
+        rb.MoveRotation(Quaternion.Euler(transform.eulerAngles + Vector3.up * inputX));
 
-        // 위 아래 바라보기 (카메라만 회전)
-        cameraOffset.rotation *= Quaternion.AngleAxis(input.y * Time.fixedDeltaTime, Vector3.left);
+        LimitCamPosition(input);
+    }
 
-        // 회전 값 초과시 회전 값 처리 if문
-        if (cameraOffset.eulerAngles.x > maxVertical && cameraOffset.eulerAngles.x < 180f) // 최대 값 초과시
-        {
-            cameraOffset.rotation = Quaternion.Euler(maxVertical, 0f, 0f);
-        }
-        else if (cameraOffset.eulerAngles.x < 360f - maxVertical && cameraOffset.eulerAngles.x > 180f) // 최소 값 초과 시 
-        {
-            //음수 값이 아닌 360부터 계산됨
-            cameraOffset.rotation = Quaternion.Euler(360f - maxVertical, 0f, 0f);
-        }
+    private void LimitCamPosition(Vector2 input)
+    {
+        Vector3 camRot = cameraOffset.eulerAngles + input.y * Time.fixedDeltaTime * Vector3.left;
+        camRot.x = camRot.x > 180 ? camRot.x - 360 : camRot.x;
+        camRot.x = Mathf.Clamp(camRot.x, -45f, 45f);
+
+        cameraOffset.rotation = Quaternion.Euler(camRot);
     }
 
     /// <summary>

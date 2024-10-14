@@ -9,9 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2697917806918208011}
-  - component: {fileID: 6894701669241687541}
-  - component: {fileID: 5858313529008713453}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ShotEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,56 +32,6 @@ Transform:
   - {fileID: 7183100632672446109}
   m_Father: {fileID: 4485573046561399588}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &6894701669241687541
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 233000781210321824}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &5858313529008713453
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 233000781210321824}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656074990047733198
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,7 +43,6 @@ GameObject:
   - component: {fileID: 1843022880911092158}
   - component: {fileID: 7734116554948823286}
   - component: {fileID: 1259589769603755824}
-  - component: {fileID: 591116604891041379}
   - component: {fileID: 3919860386749833949}
   - component: {fileID: 7022078067491248364}
   - component: {fileID: 2844563908126679351}
@@ -178,28 +125,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &591116604891041379
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1656074990047733198}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: e42a245ddc40f744994b4b96b407ec47, type: 3}
 --- !u!114 &3919860386749833949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -410,7 +335,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4485573046561399588}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ShotPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -527,7 +452,7 @@ GameObject:
   - component: {fileID: 7183100632672446109}
   - component: {fileID: 2674482370358869428}
   - component: {fileID: 4635940894931391410}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

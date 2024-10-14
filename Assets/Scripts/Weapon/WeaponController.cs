@@ -67,7 +67,7 @@ public class WeaponController : MonoBehaviour
             Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.yellow);
             Debug.Log("Did Hit");
 
-            IHealth objHealth = hit.transform.GetComponent<Enemy>() as IHealth;
+            IHealth objHealth = hit.transform.GetComponent<EnemyBase>() as IHealth;
             objHealth.OnHit(damage);
         }
         else // 빗맞춤

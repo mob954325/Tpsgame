@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IHealth
+public abstract class EnemyBase : MonoBehaviour, IHealth
 {
     private float health = 0f;
 
@@ -25,6 +26,9 @@ public class Enemy : MonoBehaviour, IHealth
 
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
 
+    public Action OnHitAction { get; set; }
+    public Action OnDieAction { get; set; }
+
     protected virtual void Awake()
     {
         Initialize();
@@ -40,12 +44,14 @@ public class Enemy : MonoBehaviour, IHealth
 
     public void OnDie()
     {
+        OnDieAction?.Invoke();
         Debug.Log($"{gameObject.name}이(가) 죽었습니다.");        
     }
 
     public void OnHit(float damageValue)
     {
         Debug.Log($"{gameObject.name}이(가) 데미지를 입었습니다.\n {Health} -> {Health - damageValue}");
+        OnHitAction?.Invoke();
         Health -= damageValue;
     }
 }

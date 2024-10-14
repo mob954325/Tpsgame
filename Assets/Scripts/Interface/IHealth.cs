@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,17 @@ public interface IHealth
     /// 최대 체력
     /// </summary>
     public float MaxHealth { get; set; }
+
+
+    /// <summary>
+    /// 피격 시 호출되는 델리게이트
+    /// </summary>
+    public Action OnHitAction { get; set; }
+
+    /// <summary>
+    /// 사망 시 호출되는 델리게이트
+    /// </summary>
+    public Action OnDieAction { get; set; }
 
     /// <summary>
     /// 피격 시 호출되는 함수
