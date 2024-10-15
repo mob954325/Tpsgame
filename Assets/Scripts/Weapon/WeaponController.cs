@@ -73,7 +73,14 @@ public class WeaponController : MonoBehaviour
         if (!CheckCanShot || !isShotting)
             return;
 
-        HitScanShot();
+        if(!isProjectile)
+        {
+
+        }
+        else
+        {
+            HitScanShot();
+        }
 
         CheckCanShot = false; // 사격 후 사격 비활성화
     }

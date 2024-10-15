@@ -37,6 +37,8 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
 
     public Action OnDieAction { get; set; }
 
+    // 유니티 ========================================================================
+
     protected virtual void Start()
     {
         Initialize();
@@ -48,6 +50,8 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
         OnDieAction -= anim.TriggerOnDead;
         OnDieAction -= controller.DeactiveCollider;
     }
+
+    // 기능 ========================================================================
 
     /// <summary>
     /// 적 초기화 시 호출되는 함수
@@ -63,6 +67,8 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
         MaxHealth = data.maxHealth;
         Health = MaxHealth;
     }
+
+    // IHealth ========================================================================
 
     public void OnDie()
     {

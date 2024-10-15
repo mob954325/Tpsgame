@@ -14,6 +14,11 @@ public class EnemyController : MonoBehaviour
         coll = GetComponent<Collider>();
     }
 
+    public void Attack()
+    {
+
+    }
+
     /// <summary>
     /// 콜라이더 비활성화 함수
     /// </summary>
