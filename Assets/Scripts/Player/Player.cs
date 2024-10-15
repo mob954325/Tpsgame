@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public Action<bool> OnShot;
 
-    private void Awake()
+    private void Start()
     {
         Init();
     }

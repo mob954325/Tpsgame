@@ -3,8 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(EnemyAnimation), typeof(EnemyController))]
 public abstract class EnemyBase : MonoBehaviour, IHealth
 {
+    private EnemyAnimation anim;
+    private EnemyController controller;
+
     private float health = 0f;
 
     public float Health 
@@ -26,12 +30,22 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
 
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
 
+    private const float disbleDelayTime = 3f;
+
     public Action OnHitAction { get; set; }
+
     public Action OnDieAction { get; set; }
 
-    protected virtual void Awake()
+    protected virtual void Start()
     {
         Initialize();
+        Health = 1f;
+    }
+
+    protected virtual void OnDisable()
+    {
+        OnDieAction -= anim.TriggerOnDead;
+        OnDieAction -= controller.DeactiveCollider;
     }
 
     /// <summary>
@@ -39,19 +53,49 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
     /// </summary>
     protected virtual void Initialize()
     {
-        Health = MaxHealth;
+        anim = GetComponent<EnemyAnimation>();
+        controller = GetComponent<EnemyController>();
+
+        OnDieAction += anim.TriggerOnDead;
+        OnDieAction += controller.DeactiveCollider;
     }
 
     public void OnDie()
     {
         OnDieAction?.Invoke();
+        StartCoroutine(OnDieCoroutine());
         Debug.Log($"{gameObject.name}이(가) 죽었습니다.");        
+    }
+
+    /// <summary>
+    /// 사망 코루틴
+    /// </summary>
+    private IEnumerator OnDieCoroutine()
+    {
+        float timeElapsed = 0.0f;
+
+        while(timeElapsed < disbleDelayTime)
+        {
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        BeforeDisable();
+        this.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// 비활성화 전 실행하는 함수
+    /// </summary>
+    protected void BeforeDisable()
+    {
+
     }
 
     public void OnHit(float damageValue)
     {
         Debug.Log($"{gameObject.name}이(가) 데미지를 입었습니다.\n {Health} -> {Health - damageValue}");
-        OnHitAction?.Invoke();
         Health -= damageValue;
+        OnHitAction?.Invoke();
     }
 }

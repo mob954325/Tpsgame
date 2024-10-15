@@ -24,6 +24,11 @@ public class WeaponController : MonoBehaviour
     public float fireRate = 0.3f;
 
     /// <summary>
+    /// 투사체 형태 공격인지 체크하는 변수 (투사체면 true, 히트스캔이면 false)
+    /// </summary>
+    public bool isProjectile = false;
+
+    /// <summary>
     /// 사격 가능 여부
     /// </summary>
     private bool checkCanShot = false;
@@ -59,9 +64,16 @@ public class WeaponController : MonoBehaviour
         if (!CheckCanShot || !isShotting)
             return;
 
+        HitScanShot();
+
+        CheckCanShot = false; // 사격 후 사격 비활성화
+    }
+
+    private void HitScanShot()
+    {
         RaycastHit hit;
 
-        if(Physics.Raycast(shotTransform.position, shotTransform.forward, out hit, shotRange, LayerMask.GetMask("Enemy")))
+        if (Physics.Raycast(shotTransform.position, shotTransform.forward, out hit, shotRange, LayerMask.GetMask("Enemy")))
         {
             // 피격 성공 시 
             Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.yellow);
@@ -74,8 +86,11 @@ public class WeaponController : MonoBehaviour
         {
             Debug.DrawRay(transform.position, transform.forward * 1000, Color.white);
         }
+    }
 
-        CheckCanShot = false; // 사격 후 사격 비활성화
+    private void ProjectileShot()
+    {
+
     }
 
     /// <summary>
