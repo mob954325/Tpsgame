@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyAnimation), typeof(EnemyController))]
 public abstract class EnemyBase : MonoBehaviour, IHealth
 {
+    public EnemyDataSO data;
     private EnemyAnimation anim;
     private EnemyController controller;
 
@@ -58,6 +59,9 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
 
         OnDieAction += anim.TriggerOnDead;
         OnDieAction += controller.DeactiveCollider;
+
+        MaxHealth = data.maxHealth;
+        Health = MaxHealth;
     }
 
     public void OnDie()
@@ -87,7 +91,7 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
     /// <summary>
     /// 비활성화 전 실행하는 함수
     /// </summary>
-    protected void BeforeDisable()
+    protected virtual void BeforeDisable()
     {
 
     }

@@ -6,27 +6,27 @@ public class WeaponController : MonoBehaviour
 {
     private Transform shotTransform;
     private Transform shotEffect;
+    public WeaponDataSO data;
 
     /// <summary>
     /// 해당 무기 공격력
     /// </summary>
-    [Tooltip("해당 무기 공격력")]
-    public float damage = 1f;
+    private float damage = 0f;
 
     /// <summary>
     /// 사격 사거리
     /// </summary>
-    public float shotRange = 50f;
+    private float shotRange = 10f;
 
     /// <summary>
     /// 사격 속도
     /// </summary>
-    public float fireRate = 0.3f;
+    private float fireRate = 1f;
 
     /// <summary>
     /// 투사체 형태 공격인지 체크하는 변수 (투사체면 true, 히트스캔이면 false)
     /// </summary>
-    public bool isProjectile = false;
+    private bool isProjectile = false;
 
     /// <summary>
     /// 사격 가능 여부
@@ -53,6 +53,15 @@ public class WeaponController : MonoBehaviour
         shotEffect = shotTransform.GetChild(0);
 
         CheckCanShot = false;
+        Init();
+    }
+
+    private void Init()
+    {
+        damage = data.damage;
+        shotRange = data.shotRange;
+        fireRate = data.firePerSec;
+        isProjectile = data.isProjectile;
     }
 
     /// <summary>

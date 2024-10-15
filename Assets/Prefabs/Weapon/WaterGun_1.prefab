@@ -186,9 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b205989e3231a44cb4f6953e9557323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
-  shotRange: 50
-  fireRate: 1
+  data: {fileID: 11400000, guid: e8b5240beff07964d98520a57d8763eb, type: 2}
 --- !u!1 &4570457109379414499
 GameObject:
   m_ObjectHideFlags: 0
