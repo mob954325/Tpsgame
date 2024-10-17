@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+
 [CreateAssetMenu(fileName = "WeaponData_", menuName = "ScriptableObject/WeaponData", order = 0)]
 public class WeaponDataSO : ScriptableObject
 {
@@ -29,4 +34,28 @@ public class WeaponDataSO : ScriptableObject
     /// 투사체인지 확인하는 변수
     /// </summary>
     public bool isProjectile = false;
+
+    /// <summary>
+    /// 투사체 오브젝트
+    /// </summary>
+    [HideInInspector]
+    public GameObject projectileObj = null;
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(WeaponDataSO))]
+public class WeaponDataSO_Editor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        WeaponDataSO script = (WeaponDataSO)target;
+
+        if(script.isProjectile)
+        {
+            script.projectileObj = EditorGUILayout.ObjectField("Projecttile", script.projectileObj, typeof(GameObject), true) as GameObject;
+        }
+    }
+}
+#endif

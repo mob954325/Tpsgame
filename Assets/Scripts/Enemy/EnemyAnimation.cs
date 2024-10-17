@@ -18,7 +18,7 @@ public class EnemyAnimation : MonoBehaviour
     {
         anim.enabled = true;
     }
-
+     
     /// <summary>
     /// 애니메이션 사망 트리거 함수
     /// </summary>

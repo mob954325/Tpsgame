@@ -73,9 +73,9 @@ public class WeaponController : MonoBehaviour
         if (!CheckCanShot || !isShotting)
             return;
 
-        if(!isProjectile)
+        if(isProjectile)
         {
-
+            ProjectileShot();
         }
         else
         {
@@ -106,7 +106,12 @@ public class WeaponController : MonoBehaviour
 
     private void ProjectileShot()
     {
+        GameObject projectileObj = Instantiate(data.projectileObj);
+        Projectile projectile = projectileObj.GetComponent<Projectile>();
+        Vector3 shotPosition = shotEffect.position + Vector3.forward * 0.1f;
 
+        projectileObj.transform.position = shotPosition;
+        projectile.Init(damage);
     }
 
     /// <summary>
