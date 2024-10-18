@@ -6,18 +6,17 @@ using UnityEngine;
 [RequireComponent(typeof(WeaponController))]
 public class Weapon : MonoBehaviour
 {
-    private Player player;
+    private GameObject owner;
     private WeaponController controller;
 
     private void Awake()
     {
-        player = GetComponentInParent<Player>();
         controller = GetComponent<WeaponController>();
+    }
 
-        if(player != null) // 임시
-        {
-            player.OnWeaponShot += controller.Shot;
-        }
+    public void Init(GameObject owner)
+    {
+        this.owner = owner;
     }
 
     /// <summary>
@@ -30,6 +29,7 @@ public class Weapon : MonoBehaviour
             if(controller == null)
             {
                 controller = GetComponent<WeaponController>();
+                controller.SetOwner(owner);
             }
 
             return controller;

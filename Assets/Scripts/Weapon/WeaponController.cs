@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
+    private GameObject ownerObj;
     private Transform shotTransform;
     private Transform shotEffect;
     public WeaponDataSO data;
@@ -67,15 +68,15 @@ public class WeaponController : MonoBehaviour
     /// <summary>
     /// 사격 함수
     /// </summary>
-    /// <param name="isShotting">사격 여부(true면 사격 시작 / false면 사격 중단)</param>
-    public void Shot(bool isShotting)
+    /// <param name="targetVec">사격 여부(true면 사격 시작 / false면 사격 중단)</param>
+    public void Shot(bool isShotting, Vector3 targetVec)
     {
         if (!CheckCanShot || !isShotting)
             return;
 
         if(isProjectile)
         {
-            ProjectileShot();
+            ProjectileShot(targetVec);
         }
         else
         {
@@ -88,30 +89,32 @@ public class WeaponController : MonoBehaviour
     private void HitScanShot()
     {
         RaycastHit hit;
+        IHealth objHealth = null;
 
-        if (Physics.Raycast(shotTransform.position, shotTransform.forward, out hit, shotRange, LayerMask.GetMask("Enemy")))
-        {
-            // 피격 성공 시 
-            Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.yellow);
-            Debug.Log("Did Hit");
+        Physics.Raycast(shotTransform.position, shotTransform.forward, out hit, shotRange);
 
-            IHealth objHealth = hit.transform.GetComponent<EnemyBase>() as IHealth;
-            objHealth.OnHit(damage);
-        }
-        else // 빗맞춤
+        // 타겟이 적인지 플레이어인지 분리해서 체크
+        if (hit.transform.gameObject.layer == LayerMask.GetMask("Enemy"))
         {
-            Debug.DrawRay(transform.position, transform.forward * 1000, Color.white);
+            objHealth = hit.transform.GetComponent<EnemyBase>() as IHealth;
         }
+        else if(hit.transform.gameObject.layer == LayerMask.GetMask("Player"))
+        {
+            objHealth = hit.transform.GetComponent<Player>() as IHealth;
+        }
+
+        if(objHealth != null) objHealth.OnHit(damage);
     }
 
-    private void ProjectileShot()
+    private void ProjectileShot(Vector3 targetVec)
     {
         GameObject projectileObj = Instantiate(data.projectileObj);
         Projectile projectile = projectileObj.GetComponent<Projectile>();
-        Vector3 shotPosition = shotEffect.position + Vector3.forward * 0.1f;
+        Vector3 shotPosition = shotEffect.position + transform.forward * 0.1f;
 
         projectileObj.transform.position = shotPosition;
-        projectile.Init(damage);
+        projectile.Init(damage, ownerObj);
+        projectile.SetTargetPosition(targetVec, this.transform.position);
     }
 
     /// <summary>
@@ -135,5 +138,14 @@ public class WeaponController : MonoBehaviour
         }
 
         CheckCanShot = true;
+    }
+
+    /// <summary>
+    /// 무기 주인 오브젝트 설정
+    /// </summary>
+    /// <param name="obj">IHealth가 있는 오브젝트</param>
+    public void SetOwner(GameObject obj)
+    {
+        ownerObj = obj;
     }
 }

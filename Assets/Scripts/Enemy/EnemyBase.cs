@@ -3,12 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [RequireComponent(typeof(EnemyAnimation), typeof(EnemyController))]
 public abstract class EnemyBase : MonoBehaviour, IHealth
 {
     public EnemyDataSO data;
     private EnemyAnimation anim;
     private EnemyController controller;
+
+    /// <summary>
+    /// EnmeyController 접근용 프로퍼티
+    /// </summary>
+    public EnemyController Controller { get => controller; }
 
     private float health = 0f;
 
@@ -17,9 +26,9 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
         get => health;
         set
         {
-            health = value;
+            health = Mathf.Clamp(value, 0f, MaxHealth);
 
-            if(health < 0f) // 사망
+            if(health == 0f) // 사망
             {
                 health = 0f;
                 OnDie();
@@ -31,6 +40,9 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
 
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
 
+    /// <summary>
+    /// 비활성화 딜레이 시간
+    /// </summary>
     private const float disbleDelayTime = 3f;
 
     public Action OnHitAction { get; set; }
@@ -108,4 +120,35 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
         Health -= damageValue;
         OnHitAction?.Invoke();
     }
+
+    protected bool CheckInSight(Vector3 target)
+    {
+        float angle = Vector3.Angle(transform.forward, target - transform.position);
+
+        return angle < data.attackAngle;
+    }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        float angle = data.attackAngle;
+        float range = data.attackRange;
+
+        Vector3 forward = transform.forward * range;
+        Quaternion p1 = Quaternion.AngleAxis(angle, transform.up);
+        Quaternion p2 = Quaternion.AngleAxis(-angle, transform.up);
+
+
+        Gizmos.color = Color.black;
+        Gizmos.DrawLine(transform.position, transform.position + forward);
+
+        Handles.color = Color.red;
+        Handles.DrawLine(transform.position, transform.position + p1 * forward, 2f);
+        Handles.DrawLine(transform.position, transform.position + p2 * forward, 2f);
+
+        Handles.color = Color.red;
+        Handles.DrawWireArc(transform.position, transform.up, p2 * forward, angle * 2, range, 2f);
+    }
+
+#endif
 }

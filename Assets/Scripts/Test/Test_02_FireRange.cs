@@ -19,7 +19,7 @@ public class Test_02_FireRange : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        curWeapon.Controller.Shot(context.performed);
+        curWeapon.Controller.Shot(context.performed, Vector3.zero);
     }
 
     protected override void OnTest2(InputAction.CallbackContext context)

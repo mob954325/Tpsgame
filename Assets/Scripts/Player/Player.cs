@@ -12,6 +12,7 @@ public class Player : MonoBehaviour, IHealth
     private PlayerInput input;
     private PlayerContoller contoller;
     private PlayerAnimation anim;
+    private Weapon weapon;
 
     /// <summary>
     /// 움직임 속도
@@ -64,9 +65,25 @@ public class Player : MonoBehaviour, IHealth
         }
     }
 
-    public float Health { get; set; }
+    public float health = 10f;
+    public float Health 
+    { 
+        get => health; 
 
-    public float MaxHealth { get; set; }
+        set
+        {
+            health = Mathf.Clamp(value, 0f, MaxHealth);
+
+            if (health == 0f) // 사망
+            {
+                OnDie();
+            }
+        }
+    }
+
+    public float maxHealth = 10f;
+
+    public float MaxHealth { get => maxHealth; set => maxHealth = value; }
 
     public Action OnHitAction { get; set; }
 
@@ -82,16 +99,6 @@ public class Player : MonoBehaviour, IHealth
         Init();
     }
 
-    private void FixedUpdate()
-    {
-
-    }
-
-    private void LateUpdate()
-    {
-
-    }
-
     /// <summary>
     /// Player 초기화 함수
     /// </summary>
@@ -100,11 +107,15 @@ public class Player : MonoBehaviour, IHealth
         input = GetComponent<PlayerInput>();
         contoller = GetComponent<PlayerContoller>();
         anim = GetComponent<PlayerAnimation>();
+        weapon = GetComponentInChildren<Weapon>();
+
+        weapon.Init(this.gameObject);
 
         input.OnMove += OnPlayerMove;
         input.OnLook += OnPlayerLook;
         input.OnJump += OnPlayerJump;
         input.OnShot += OnPlayerShot;
+        input.OnShot += (boolean) => { weapon.Controller.Shot(boolean, transform.forward * 1f); };
         input.OnZoomIn += OnPlayerZoomIn;
 
         // 초기화 확인
@@ -156,6 +167,9 @@ public class Player : MonoBehaviour, IHealth
         contoller.OnLook(lookVec * sensitivity);
     }
 
+    /// <summary>
+    /// 플레이어 점프 시 실행되는 함수
+    /// </summary>
     private void OnPlayerJump(bool isJump)
     {
         if (!completedInitialize)
@@ -172,6 +186,9 @@ public class Player : MonoBehaviour, IHealth
         anim.SetIsGround(isGround);
     }
 
+    /// <summary>
+    /// 플레이어 사격 시 실행되는 함수
+    /// </summary>
     private void OnPlayerShot(bool isShot)
     {
         if (!completedInitialize)
@@ -196,11 +213,13 @@ public class Player : MonoBehaviour, IHealth
 
     public void OnHit(float damageValue)
     {
-        
+        OnHitAction?.Invoke();
+        Health -= damageValue;
+        Debug.Log("플레이어 피해 입음");
     }
 
     public void OnDie()
     {
-        
+        OnDieAction?.Invoke();
     }
 }

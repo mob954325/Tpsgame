@@ -17,4 +17,5 @@ MonoBehaviour:
   shotRange: 30
   firePerSec: 0.3
   isProjectile: 1
-  projectileObj: {fileID: 0}
+  projectileObj: {fileID: 4585397673107026872, guid: 6c89d36218599f8419d054f9eb2e1005,
+    type: 3}
