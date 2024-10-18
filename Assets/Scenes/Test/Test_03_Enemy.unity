@@ -1338,6 +1338,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 350392620678357814, guid: 37823c3f2bf7e314badc8daa54dafce1,
+        type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 350392620678357814, guid: 37823c3f2bf7e314badc8daa54dafce1,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1528892947644974834, guid: 37823c3f2bf7e314badc8daa54dafce1,
         type: 3}
       propertyPath: vCam

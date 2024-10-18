@@ -17,27 +17,39 @@ public class PlayerInput : MonoBehaviour
     /// <summary>`
     /// 마우스 벡터
     /// </summary>
-    Vector2 loockVec;
+    Vector2 lookVec;
 
     /// <summary>
     /// 스프린트 확인 변수
     /// </summary>
     bool isSprint = false;
 
-    /// <summary>
-    /// 점프키 누름 여부 변수
-    /// </summary>
     bool isJump = false;
 
     /// <summary>
-    /// 사격키 누름 여부 변수
+    /// 움직임 입력 시 실행되는 델리게이트
     /// </summary>
-    bool isShot = false;
+    public Action<Vector2, bool> OnMove;
 
     /// <summary>
-    /// 조준 누름 여부 변수
+    /// 마우스 입력 시 실행되는 델리게이트
     /// </summary>
-    bool isZoomin = false;
+    public Action<Vector2> OnLook;
+
+    /// <summary>
+    /// 점프 입력 시 실행되는 델리게이트
+    /// </summary>
+    public Action<bool> OnJump;
+
+    /// <summary>
+    /// 사격키 입력 시 실행되는 델리게이트
+    /// </summary>
+    public Action<bool> OnShot;
+
+    /// <summary>
+    /// 줌 시작 시 실행되는 델리게이트
+    /// </summary>
+    public Action<bool> OnZoomIn;
 
     // unity ====================================
 
@@ -56,6 +68,23 @@ public class PlayerInput : MonoBehaviour
     {
         PlayerAction_Remove();
         inputActions.Player.Disable();
+    }
+
+    private void FixedUpdate()
+    {
+        if (!inputActions.Player.enabled)
+            return;
+
+        OnMove?.Invoke(moveVec, isSprint);
+        OnJump?.Invoke(isJump);
+    }
+
+    private void LateUpdate()
+    {
+        if (!inputActions.Player.enabled)
+            return;
+        
+        OnLook?.Invoke(lookVec);
     }
 
     // initialize ====================================
@@ -101,108 +130,26 @@ public class PlayerInput : MonoBehaviour
 
     private void OnLookInput(InputAction.CallbackContext context)
     {
-        loockVec = context.ReadValue<Vector2>();
+        lookVec = context.ReadValue<Vector2>();
     }
 
     private void OnSprintInput(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            isSprint = true;
-        }
-        else
-        {
-            isSprint = false;
-        }
+        isSprint = context.performed;
     }
 
     private void OnJumpInput(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            isJump = true;
-        }
-        else
-        {
-            isJump = false;
-        }
+        isJump = context.performed;
     }
 
     private void OnShotInput(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            isShot = true;
-        }
-        else
-        {
-            isShot = false;
-        }
+        OnShot?.Invoke(context.performed);
     }
 
     private void OnZoomInput(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            isZoomin = true;
-        }
-        else
-        {
-            isZoomin = false;
-        }
-    }
-
-    /// <summary>
-    /// 움직임 입력 값을 반환하는 함수
-    /// </summary>
-    /// <returns>움직임 입력 값</returns>
-    public Vector2 GetMoveVector()
-    {
-        return moveVec;
-    }
-
-    /// <summary>
-    /// 마우스 입력 값을 변환하는 함수
-    /// </summary>
-    /// <returns>마우스 입력 값</returns>
-    public Vector2 GetLookVector()
-    {
-        return loockVec;
-    }
-
-    /// <summary>
-    /// 스프린트 입력 반환 변수 (LShift)
-    /// </summary>
-    /// <returns>LShift 누름 여부(눌렀으면 true 아니면 false)</returns>
-    public bool GetSprintValue()
-    {
-        return isSprint;
-    }
-
-    /// <summary>
-    /// 점프 입력값 반환 함수 (Space)
-    /// </summary>
-    /// <returns>눌렀으면 true 아니면 false</returns>
-    public bool GetJumpPressValue()
-    {
-        return isJump;
-    }
-
-    /// <summary>
-    /// 사격 입력값 반환 함수(LM)
-    /// </summary>
-    /// <returns>눌렀으면 true 아니면 false</returns>
-    public bool GetShotPressValue()
-    {
-        return isShot;
-    }
-
-    /// <summary>
-    /// 조준 입력값 반환 함수
-    /// </summary>
-    /// <returns>눌렀으면 true 아니면 false</returns>
-    public bool GetZoomPressValue()
-    {
-        return isZoomin;
+        OnZoomIn?.Invoke(context.performed);    
     }
 }

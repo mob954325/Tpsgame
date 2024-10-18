@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 
 [RequireComponent(typeof(PlayerInput), typeof(PlayerContoller), typeof(PlayerAnimation))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IHealth
 {
     private PlayerInput input;
     private PlayerContoller contoller;
@@ -64,10 +64,18 @@ public class Player : MonoBehaviour
         }
     }
 
+    public float Health { get; set; }
+
+    public float MaxHealth { get; set; }
+
+    public Action OnHitAction { get; set; }
+
+    public Action OnDieAction { get; set; }
+
     /// <summary>
     /// 사격 시 실행되는 델리게이트
     /// </summary>
-    public Action<bool> OnShot;
+    public Action<bool> OnWeaponShot;
 
     private void Start()
     {
@@ -76,15 +84,12 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        OnPlayerMove();
-        OnPlayerJump();
-        OnPlayerShot();
-        OnPlayerZoomIn();
+
     }
 
     private void LateUpdate()
     {
-        OnPlayerLook();
+
     }
 
     /// <summary>
@@ -95,6 +100,12 @@ public class Player : MonoBehaviour
         input = GetComponent<PlayerInput>();
         contoller = GetComponent<PlayerContoller>();
         anim = GetComponent<PlayerAnimation>();
+
+        input.OnMove += OnPlayerMove;
+        input.OnLook += OnPlayerLook;
+        input.OnJump += OnPlayerJump;
+        input.OnShot += OnPlayerShot;
+        input.OnZoomIn += OnPlayerZoomIn;
 
         // 초기화 확인
         if (input == null || contoller == null)
@@ -113,20 +124,21 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 플레이어 움직임 함수 (Update)
     /// </summary>
-    private void OnPlayerMove()
+    private void OnPlayerMove(Vector2 moveVec, bool isSprint)
     {
         if (!completedInitialize)
             return;
 
-        Vector2 moveVec = input.GetMoveVector();
-
         // 움직임 처리
-        if (anim.SetSprintParam(input.GetSprintValue())) // 달리기 중이면 
+        if(isSprint) 
         {
+            // 달리기 
             contoller.OnMove(moveVec * movePower * sprintRatio); // 증가 비율 값 만큼 속도 올리기
+            anim.SetSprintParam(isSprint);
         }
         else
         {
+            // 걷기
             contoller.OnMove(moveVec * movePower);
         }
 
@@ -136,22 +148,22 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 카메라 회전 함수 (Late)
     /// </summary>
-    private void OnPlayerLook()
+    private void OnPlayerLook(Vector2 lookVec)
     {
         if (!completedInitialize)
             return;
 
-        contoller.OnLook(input.GetLookVector() * sensitivity);
+        contoller.OnLook(lookVec * sensitivity);
     }
 
-    private void OnPlayerJump()
+    private void OnPlayerJump(bool isJump)
     {
         if (!completedInitialize)
             return;
 
         bool isGround = contoller.GetIsGroundValue();
 
-        if (input.GetJumpPressValue() && isGround)
+        if (isJump && isGround)
         {
             anim.TriggerOnJump();
             contoller.OnJump(jumpPower);
@@ -160,25 +172,35 @@ public class Player : MonoBehaviour
         anim.SetIsGround(isGround);
     }
 
-    private void OnPlayerShot()
+    private void OnPlayerShot(bool isShot)
     {
         if (!completedInitialize)
             return;
 
-        bool pressed = input.GetShotPressValue();
-        if (pressed)
+        if (isShot)
         {
             anim.TriggerOnShot();
-            OnShot?.Invoke(pressed);
+            OnWeaponShot?.Invoke(isShot);
         }
     }
 
-    private void OnPlayerZoomIn()
+    private void OnPlayerZoomIn(bool isZoomIn)
     {
         if (!completedInitialize)
             return;
 
-        bool isZoom = input.GetZoomPressValue();
-        contoller.OnZoom(isZoom);
+        contoller.OnZoom(isZoomIn);
+    }
+
+    // IHealth ======================================
+
+    public void OnHit(float damageValue)
+    {
+        
+    }
+
+    public void OnDie()
+    {
+        
     }
 }

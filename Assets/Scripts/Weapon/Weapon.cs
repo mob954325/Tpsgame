@@ -16,7 +16,7 @@ public class Weapon : MonoBehaviour
 
         if(player != null) // 임시
         {
-            player.OnShot += controller.Shot;
+            player.OnWeaponShot += controller.Shot;
         }
     }
 
