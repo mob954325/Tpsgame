@@ -17,6 +17,7 @@ public class Weapon : MonoBehaviour
     public void Init(GameObject owner)
     {
         this.owner = owner;
+        controller.SetOwner(owner);
     }
 
     /// <summary>
@@ -29,7 +30,6 @@ public class Weapon : MonoBehaviour
             if(controller == null)
             {
                 controller = GetComponent<WeaponController>();
-                controller.SetOwner(owner);
             }
 
             return controller;

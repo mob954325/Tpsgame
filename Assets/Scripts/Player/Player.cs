@@ -215,7 +215,6 @@ public class Player : MonoBehaviour, IHealth
     {
         OnHitAction?.Invoke();
         Health -= damageValue;
-        Debug.Log("플레이어 피해 입음");
     }
 
     public void OnDie()

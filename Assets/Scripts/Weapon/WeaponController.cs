@@ -93,12 +93,15 @@ public class WeaponController : MonoBehaviour
 
         Physics.Raycast(shotTransform.position, shotTransform.forward, out hit, shotRange);
 
+        if (hit.transform == null)
+            return;
+
         // 타겟이 적인지 플레이어인지 분리해서 체크
-        if (hit.transform.gameObject.layer == LayerMask.GetMask("Enemy"))
+        if (hit.transform.gameObject.layer == 7)
         {
             objHealth = hit.transform.GetComponent<EnemyBase>() as IHealth;
         }
-        else if(hit.transform.gameObject.layer == LayerMask.GetMask("Player"))
+        else if(hit.transform.gameObject.layer == 6)
         {
             objHealth = hit.transform.GetComponent<Player>() as IHealth;
         }

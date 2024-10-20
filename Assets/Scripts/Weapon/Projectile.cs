@@ -39,9 +39,8 @@ public class Projectile : MonoBehaviour
         if (target != null && other.gameObject != owner)
         {
             target.OnHit(damage);
+            Destroy(this.gameObject);
         }
-
-        //Destroy(this.gameObject);
     }
 
     public void Init(float damageData, GameObject curOwner = null)

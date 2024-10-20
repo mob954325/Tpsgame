@@ -123,14 +123,19 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
 
     protected bool CheckInSight(Vector3 target)
     {
-        float angle = Vector3.Angle(transform.forward, target - transform.position);
+        float angle = Vector3.Angle(transform.forward, target - transform.forward);
+        Debug.Log(angle);
 
         return angle < data.attackAngle;
     }
 
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
+        if (data == null)
+            return;
+
         float angle = data.attackAngle;
         float range = data.attackRange;
 
