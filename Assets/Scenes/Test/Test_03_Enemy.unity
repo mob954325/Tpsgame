@@ -244,8 +244,8 @@ GameObject:
   - component: {fileID: 136578265}
   - component: {fileID: 136578264}
   - component: {fileID: 136578263}
-  m_Layer: 0
-  m_Name: GameObject
+  m_Layer: 7
+  m_Name: Cop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -281,14 +281,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 136578260}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: -0.00000053644175}
   m_LocalPosition: {x: 9.240855, y: 0.5, z: 2.8559208}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4050653058623838903}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!114 &136578263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,9 +334,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 1
+  m_Height: 2.1336741
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1.0651553, z: 0}
 --- !u!54 &136578266
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -360,7 +360,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -386,7 +386,7 @@ Animator:
   m_GameObject: {fileID: 136578260}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 016be7a9d9cf5074f9256eb2f92ebfa4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1042,37 +1042,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &601433141
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 601433142}
-  m_Layer: 0
-  m_Name: Enemy
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &601433142
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 601433141}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1930,7 +1899,7 @@ GameObject:
   - component: {fileID: 4050653058623838903}
   - component: {fileID: 4057582980829670803}
   - component: {fileID: 4065850671350379687}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_Bean_Cop_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2192,10 +2161,9 @@ SceneRoots:
   - {fileID: 4884075895976263703}
   - {fileID: 8339982542408731404}
   - {fileID: 1675741011}
-  - {fileID: 601433142}
+  - {fileID: 136578262}
   - {fileID: 1921842050}
   - {fileID: 591481082}
   - {fileID: 1333232183}
   - {fileID: 1711815802}
   - {fileID: 1695333911}
-  - {fileID: 136578262}

@@ -30,6 +30,25 @@ public class EnemyController : MonoBehaviour
     }
 
     /// <summary>
+    /// 오브젝트를 멈출지 설정하는 함수
+    /// </summary>
+    /// <param name="value">true면 정지 false 목표로 이동</param>
+    public bool SetStopObject(bool value)
+    {
+        navAgent.isStopped = value;
+        return value;   
+    }
+
+
+    public void RotateToTarget(Vector3 toTargetDir)
+    {
+        transform.rotation = Quaternion.Slerp(transform.rotation,
+                                              Quaternion.LookRotation(toTargetDir), 
+                                              Time.deltaTime * 5f);
+    }
+
+
+    /// <summary>
     /// 목적지에 도달했는지 확인하는 함수
     /// </summary>
     /// <returns>도달했으면 true 아니면 false</returns>

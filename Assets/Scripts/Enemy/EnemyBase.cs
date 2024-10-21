@@ -121,9 +121,35 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
         OnHitAction?.Invoke();
     }
 
-    protected bool CheckInSight(Vector3 target)
+    /// <summary>
+    /// 범위 내 플레이어 오브젝트 찾기
+    /// </summary>
+    /// <returns></returns>
+    protected GameObject GetPlayerInRange()
     {
-        float angle = Vector3.Angle(transform.forward, target - transform.forward);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, data.attackRange);
+        GameObject result = null;
+        int curLayer = 1;
+
+        foreach (Collider coll in colliders)
+        {
+            curLayer = coll.gameObject.layer;
+            if (1 << curLayer == LayerMask.GetMask("Player"))
+            {
+                result = coll.gameObject;
+            }
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 파라미터의 타겟 위치가 시야 범위 내에 있는지 확인하는 함수
+    /// </summary>
+    /// <param name="toTargetDir">타겟 위치</param>
+    /// <returns>범위 안에 있으면 true 아니면 false</returns>
+    protected bool IsTargetInSight(Vector3 toTargetDir)
+    {
+        float angle = Vector3.Angle(transform.forward, toTargetDir);
         Debug.Log(angle);
 
         return angle < data.attackAngle;
@@ -143,9 +169,11 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
         Quaternion p1 = Quaternion.AngleAxis(angle, transform.up);
         Quaternion p2 = Quaternion.AngleAxis(-angle, transform.up);
 
-
         Gizmos.color = Color.black;
         Gizmos.DrawLine(transform.position, transform.position + forward);
+
+        Handles.color = Color.yellow;
+        Handles.DrawWireDisc(transform.position, transform.up, data.attackRange, 2f);
 
         Handles.color = Color.red;
         Handles.DrawLine(transform.position, transform.position + p1 * forward, 2f);
@@ -154,6 +182,5 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
         Handles.color = Color.red;
         Handles.DrawWireArc(transform.position, transform.up, p2 * forward, angle * 2, range, 2f);
     }
-
 #endif
 }
