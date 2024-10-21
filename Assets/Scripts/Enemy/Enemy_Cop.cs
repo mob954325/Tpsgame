@@ -28,7 +28,6 @@ public class Enemy_Cop : EnemyBase
 
             if(IsTargetInSight(targetDir))
             {
-                Debug.Log("사격");
                 weapon.Controller.Shot(true, target.transform.position);
             }
         }

@@ -21,6 +21,15 @@ public class EnemyController : MonoBehaviour
     }
 
     /// <summary>
+    /// 적 컨트롤 스크립트 초기화 함수 (Awake 이후 실행)
+    /// </summary>
+    /// <param name="data">적 데이터</param>
+    public void Init(EnemyDataSO data)
+    {
+        navAgent.speed = data.moveSpeed;
+    }
+
+    /// <summary>
     /// 목적기 설정 함수
     /// </summary>
     /// <param name="value">위치 벡터</param>

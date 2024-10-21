@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -53,8 +55,7 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
 
     protected virtual void Start()
     {
-        Initialize();
-        Health = 1f;
+        Init();
     }
 
     protected virtual void OnDisable()
@@ -66,12 +67,13 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
     // 기능 ========================================================================
 
     /// <summary>
-    /// 적 초기화 시 호출되는 함수
+    /// 적 초기화 시 호출되는 함수 (awake 이후 실행)
     /// </summary>
-    protected virtual void Initialize()
+    protected virtual void Init()
     {
         anim = GetComponent<EnemyAnimation>();
         controller = GetComponent<EnemyController>();
+        controller.Init(data);
 
         OnDieAction += anim.TriggerOnDead;
         OnDieAction += controller.DeactiveCollider;
@@ -150,7 +152,6 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
     protected bool IsTargetInSight(Vector3 toTargetDir)
     {
         float angle = Vector3.Angle(transform.forward, toTargetDir);
-        Debug.Log(angle);
 
         return angle < data.attackAngle;
     }
