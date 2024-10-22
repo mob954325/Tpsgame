@@ -6,7 +6,9 @@ using UnityEngine.InputSystem;
 
 public class Test_04_Billboard : TestBase
 {
-    public UIBillboard billboard;
+    public Billboard normal;
+    public Billboard_Upward upward;
+
     public Transform lookAtTarget;
     private Transform spawnPoint;
 
@@ -19,7 +21,16 @@ public class Test_04_Billboard : TestBase
     {
         if(lookAtTarget != null)
         {
-            billboard.Init(spawnPoint.position, lookAtTarget);
+            normal.Init(spawnPoint.position, lookAtTarget);
+        }
+    }
+
+    protected override void OnTest2(InputAction.CallbackContext context)
+    {
+        if (lookAtTarget != null)
+        {
+            upward.Init(spawnPoint.position, lookAtTarget);
+            upward.SetTimer(3f);
         }
     }
 }

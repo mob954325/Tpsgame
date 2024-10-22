@@ -4,29 +4,14 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class UIBillboard : MonoBehaviour
+public class Billboard : MonoBehaviour
 {
-    TextMeshPro worldText;
-    Vector3 LookAtTargetVec;
+    private TextMeshPro worldText;
+    protected Transform lookAtTarget;
 
-    private float activeTime = 0f;
-    public float maxTime = 3f;
-
-    private void LateUpdate()
+    protected void LateUpdate()
     {
-        if(activeTime > maxTime) // 타이머 시간 초과 시 비활성화
-        {
-            transform.gameObject.SetActive(false);
-        }
-
-        if(LookAtTargetVec != null)
-        { 
-            transform.LookAt(LookAtTargetVec);
-            transform.position += transform.up * Time.fixedDeltaTime;
-            LookAtTargetVec += transform.up * Time.fixedDeltaTime;
-
-            activeTime += Time.fixedDeltaTime;
-        }
+        BillboardUpate();
     }
 
     /// <summary>
@@ -36,14 +21,20 @@ public class UIBillboard : MonoBehaviour
     public void Init(Vector3 spawnPosition,Transform target)
     {
         transform.position = spawnPosition;
-        LookAtTargetVec = target.position;
+        lookAtTarget = target;
 
         Transform child = transform.GetChild(0);
         worldText = child.GetComponent<TextMeshPro>();
 
-        activeTime = 0f;
-
         transform.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// 빌보드 업데이트 함수
+    /// </summary>
+    public virtual void BillboardUpate()
+    {
+        transform.LookAt(lookAtTarget);
     }
 
     /// <summary>
