@@ -4,7 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Billboard : MonoBehaviour
+public class Billboard : Product
 {
     private TextMeshPro worldText;
     protected Transform lookAtTarget;
@@ -18,9 +18,8 @@ public class Billboard : MonoBehaviour
     /// 빌보드 바라보는 오브젝트 초기화용 함수
     /// </summary>
     /// <param name="target">바라볼 오브젝트</param>
-    public void Init(Vector3 spawnPosition,Transform target)
+    public void Init(Transform target)
     {
-        transform.position = spawnPosition;
         lookAtTarget = target;
 
         Transform child = transform.GetChild(0);

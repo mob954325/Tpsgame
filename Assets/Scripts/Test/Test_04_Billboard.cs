@@ -21,7 +21,7 @@ public class Test_04_Billboard : TestBase
     {
         if(lookAtTarget != null)
         {
-            normal.Init(spawnPoint.position, lookAtTarget);
+            normal.Init(lookAtTarget);
         }
     }
 
@@ -29,8 +29,8 @@ public class Test_04_Billboard : TestBase
     {
         if (lookAtTarget != null)
         {
-            upward.Init(spawnPoint.position, lookAtTarget);
             upward.SetTimer(3f);
+            upward.Init(lookAtTarget);
         }
     }
 }
