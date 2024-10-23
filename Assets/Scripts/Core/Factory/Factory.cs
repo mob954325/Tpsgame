@@ -17,7 +17,7 @@ public class Factory<T> : MonoBehaviour where T : Product
 
     public GameObject originalProduct;
 
-    public int count = 8;
+    public int capacity = 8;
 
     // 1. 제품 생성
     // 2. 제품 초기화
@@ -27,21 +27,13 @@ public class Factory<T> : MonoBehaviour where T : Product
     
     public void Init()
     {
-        products = new List<T>(count);
-        readyQueue = new Queue<T>(count);
+        products = new List<T>(capacity);
+        readyQueue = new Queue<T>(capacity);
 
-        int indexCount = 0;
-        for(int i = 0; i < count; i++)
+        for(int i = 0; i < capacity; i++)
         {
             // 리스트 초기화
-            GameObject product = Instantiate(originalProduct, this.gameObject.transform);
-            product.gameObject.name = $"{originalProduct.gameObject.name}_{indexCount}";
-            products.Add(product.GetComponent<T>());
-            readyQueue.Enqueue(product.GetComponent<T>());
-
-            product.SetActive(false);
-
-            indexCount++;
+            CreateProduct(i);
         }
     }
 
@@ -53,6 +45,12 @@ public class Factory<T> : MonoBehaviour where T : Product
     /// <returns>생성한 오브젝트의 T 타입</returns>
     protected T SpawnProduct(Vector3? pos = null, Quaternion? rot = null)
     {
+        if(readyQueue.Count < 1)
+        {
+            AddCapacity();
+            Debug.Log($"{gameObject.name} 용량 증가");
+        }
+
         T curProduct = readyQueue.Dequeue();
         curProduct.OnDeactive += () => { readyQueue.Enqueue(curProduct); }; // 비활성화 시 다시 큐로 복귀
 
@@ -62,5 +60,38 @@ public class Factory<T> : MonoBehaviour where T : Product
         obj.transform.rotation = rot.GetValueOrDefault();
 
         return curProduct;
+    }
+
+    private void CreateProduct(int numbering = -1)
+    {
+        GameObject product = Instantiate(originalProduct, this.gameObject.transform);
+        product.gameObject.name = $"{originalProduct.gameObject.name}_{numbering}";
+        products.Add(product.GetComponent<T>());
+        readyQueue.Enqueue(product.GetComponent<T>());
+        product.SetActive(false);
+    }
+
+    private void AddCapacity()
+    {
+        List<T> preProducts = new List<T>(capacity);
+        foreach(T item in products)
+        {
+            preProducts.Add(item);
+        }
+
+        capacity *= 2;
+
+        products = new List<T>(capacity);
+
+        foreach(T item in preProducts)
+        {
+            products.Add(item);
+            readyQueue.Enqueue(item.GetComponent<T>());
+        }
+
+        for(int i = 0; i < capacity / 2; i++)
+        {
+            CreateProduct(i + 1 + capacity / 2);
+        }
     }
 }
