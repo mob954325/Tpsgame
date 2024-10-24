@@ -85,7 +85,7 @@ public class Player : MonoBehaviour, IHealth
 
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
 
-    public Action OnHitAction { get; set; }
+    public Action<float> OnHitAction { get; set; }
 
     public Action OnDieAction { get; set; }
 
@@ -213,7 +213,7 @@ public class Player : MonoBehaviour, IHealth
 
     public void OnHit(float damageValue)
     {
-        OnHitAction?.Invoke();
+        OnHitAction?.Invoke(damageValue);
         Health -= damageValue;
     }
 

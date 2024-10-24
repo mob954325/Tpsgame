@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.VFX;
+
 
 
 #if UNITY_EDITOR
@@ -15,6 +17,9 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
     public EnemyDataSO data;
     private EnemyAnimation anim;
     private EnemyController controller;
+    private FactroyManager fManager;
+
+    protected FactroyManager FManager { get => fManager; }
 
     /// <summary>
     /// EnmeyController 접근용 프로퍼티
@@ -47,7 +52,7 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
     /// </summary>
     private const float disbleDelayTime = 3f;
 
-    public Action OnHitAction { get; set; }
+    public Action<float> OnHitAction { get; set; }
 
     public Action OnDieAction { get; set; }
 
@@ -71,6 +76,8 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
     /// </summary>
     protected virtual void Init()
     {
+        fManager = FindAnyObjectByType<FactroyManager>();
+
         anim = GetComponent<EnemyAnimation>();
         controller = GetComponent<EnemyController>();
         controller.Init(data);
@@ -118,9 +125,11 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
 
     public void OnHit(float damageValue)
     {
-        Debug.Log($"{gameObject.name}이(가) 데미지를 입었습니다.\n {Health} -> {Health - damageValue}");
+        if (health <= 0)
+            return;
+
         Health -= damageValue;
-        OnHitAction?.Invoke();
+        OnHitAction?.Invoke(damageValue);
     }
 
     /// <summary>

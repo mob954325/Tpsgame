@@ -22,7 +22,7 @@ public interface IHealth
     /// <summary>
     /// 피격 시 호출되는 델리게이트
     /// </summary>
-    public Action OnHitAction { get; set; }
+    public Action<float> OnHitAction { get; set; }
 
     /// <summary>
     /// 사망 시 호출되는 델리게이트
