@@ -63,9 +63,7 @@ public class EnemyController : MonoBehaviour
     /// <returns>도달했으면 true 아니면 false</returns>
     public bool CheckReachDestination()
     {
-        float length = navAgent.destination.sqrMagnitude;
-
-        return length < navAgent.stoppingDistance; 
+        return navAgent.remainingDistance < navAgent.stoppingDistance; 
     }
 
     public void Attack()
