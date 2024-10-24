@@ -24,7 +24,12 @@ public class Factory<T> : MonoBehaviour where T : Product
     // 2.1 리스트 초기화
     // 2.2 레디큐 초기화
     // 3. 제품 소환 코드
-    
+
+    private void Awake()
+    {
+        Init();
+    }
+
     public void Init()
     {
         products = new List<T>(capacity);
@@ -33,7 +38,7 @@ public class Factory<T> : MonoBehaviour where T : Product
         for(int i = 0; i < capacity; i++)
         {
             // 리스트 초기화
-            CreateProduct(i);
+            CreateProduct(i + 1);
         }
     }
 

@@ -44,13 +44,4 @@ public class Billboard : Product
     {
         worldText.text = str;
     }
-
-    /// <summary>
-    /// 텍스트 설정 함수 (int형)
-    /// </summary>
-    /// <param name="value">int형 값</param>
-    public void SetText(int value)
-    {
-        worldText.text = $"{value}";
-    }
 }

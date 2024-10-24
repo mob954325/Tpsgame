@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class Factory_Billboard : Factory<Billboard>
 {
-    private void Awake()
-    {
-        Init();
-    }
-
-    public void SpawnBillboard(Transform lookAtTarget, Vector3? pos = null, Quaternion? rot = null)
+    public Billboard SpawnBillboard(Transform lookAtTarget, string str, Vector3? pos = null, Quaternion? rot = null)
     {
         Billboard item = SpawnProduct(pos, rot);
         item.Init(lookAtTarget);
+        item.SetText(str);
+
+        return item;
     }
 }

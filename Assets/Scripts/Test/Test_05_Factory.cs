@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class Test_05_Factory : TestBase
 {
     public Factory_Billboard factory;
+    public Factory_Billboard_Upward factory2;
     public Transform lookTarget;
     public Transform spawnPoint;
 
@@ -17,7 +18,14 @@ public class Test_05_Factory : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        factory.SpawnBillboard(lookTarget, spawnPoint.position, Quaternion.identity);
+        string str = $"Test Text";
+        factory.SpawnBillboard(lookTarget, str, spawnPoint.position, Quaternion.identity);
+    }
+
+    protected override void OnTest2(InputAction.CallbackContext context)
+    {
+        string str = $"Test Text2";
+        factory2.SpawnBillboard(lookTarget, str, spawnPoint.position, Quaternion.identity);
     }
 }
 #endif
