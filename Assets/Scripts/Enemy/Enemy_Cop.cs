@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Enemy_Cop : EnemyBase
 {
+    private LocalManager localManager;
+
     private Weapon weapon;
     private Patrol patrol;
     private GameObject target;
@@ -12,18 +14,19 @@ public class Enemy_Cop : EnemyBase
     {
         base.Start();
 
+        localManager = FindAnyObjectByType<LocalManager>();
+
         Transform child = transform.GetChild(1);
         weapon = child.GetComponent<Weapon>();
         weapon.Controller.SetOwner(this.gameObject);
 
         patrol = FindAnyObjectByType<Patrol>();
-
         Controller.SetDestination(patrol.GetPatrolPosition()); // navAgent 도착지 초기화
         
         OnHitAction += (float damage) => 
         {
-            Vector3 spawnPos = this.gameObject.transform.position + Vector3.up * 1.5f + Vector3.right * 1.5f;
-            FManager.Billboard_Upward.SpawnBillboard(target.transform, $"{damage}", spawnPos); 
+            Vector3 spawnPos = this.gameObject.transform.position + Vector3.up * 1.5f;
+            FManager.Billboard_Upward.SpawnBillboard(localManager.Player.transform, $"{damage}", spawnPos); 
         };
     }
 

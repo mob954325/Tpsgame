@@ -10,7 +10,7 @@ public class PlayerContoller : MonoBehaviour
 {
     private Rigidbody rb;
     private Transform cameraOffset;
-    [SerializeField] private CinemachineVirtualCamera vCam;
+    public CinemachineVirtualCamera vCam;
 
     private const float zoomValue = 1f;
     private const float nonZoomValue = 3f;

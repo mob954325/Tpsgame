@@ -63,6 +63,7 @@ public class EnemyController : MonoBehaviour
     /// <returns>도달했으면 true 아니면 false</returns>
     public bool CheckReachDestination()
     {
+        Debug.Log(navAgent.remainingDistance);
         return navAgent.remainingDistance < navAgent.stoppingDistance; 
     }
 
