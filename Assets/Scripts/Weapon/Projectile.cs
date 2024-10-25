@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider), typeof(Rigidbody))]
-public class Projectile : MonoBehaviour
+public class Projectile : Product
 {
     private GameObject owner;
 
+    private float maxActiveTime = 20f;
+    private float timer = 0f;
     private float damage = 0f;
     public float force = 5.0f;
 
@@ -21,12 +23,23 @@ public class Projectile : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
     }
 
+    private void Start()
+    {
+        OnDeactive += ResetSetting;
+    }
+
     private void FixedUpdate()
     {
         if (!isInstantiate)
             return;
 
+        if(timer > maxActiveTime)
+        {
+            gameObject.SetActive(false);
+        }
+
         rigid.MovePosition(transform.position + targetDir.normalized * force * Time.fixedDeltaTime);
+        timer += Time.fixedDeltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -39,7 +52,7 @@ public class Projectile : MonoBehaviour
         if (target != null && other.gameObject != owner)
         {
             target.OnHit(damage);
-            Destroy(this.gameObject);
+            gameObject.SetActive(false);
         }
     }
 
@@ -54,6 +67,12 @@ public class Projectile : MonoBehaviour
     public void SetTargetPosition(Vector3 to, Vector3 from)
     {
         targetDir = to - from;
+    }
+
+    private void ResetSetting()
+    {
+        timer = 0f;
+        owner = null;        
     }
 
     private IHealth GetTarget(GameObject obj)

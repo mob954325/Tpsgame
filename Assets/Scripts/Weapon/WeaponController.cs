@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
+    private FactroyManager factoryManager;
+    public WeaponDataSO data;
+
     private GameObject ownerObj;
     private Transform shotTransform;
     private Transform shotEffect;
-    public WeaponDataSO data;
 
     /// <summary>
     /// 해당 무기 공격력
@@ -50,6 +52,7 @@ public class WeaponController : MonoBehaviour
 
     private void Awake()
     {
+        factoryManager = FindAnyObjectByType<FactroyManager>();
         shotTransform = transform.GetChild(0);
         shotEffect = shotTransform.GetChild(0);
 
@@ -108,16 +111,11 @@ public class WeaponController : MonoBehaviour
 
         if(objHealth != null) objHealth.OnHit(damage);
     }
-
+    
     private void ProjectileShot(Vector3 targetVec)
     {
-        GameObject projectileObj = Instantiate(data.projectileObj);
-        Projectile projectile = projectileObj.GetComponent<Projectile>();
         Vector3 shotPosition = shotEffect.position + transform.forward * 0.1f;
-
-        projectileObj.transform.position = shotPosition;
-        projectile.Init(damage, ownerObj);
-        projectile.SetTargetPosition(targetVec, this.transform.position);
+        factoryManager.Projectile.SpawnProjectile(shotPosition, Quaternion.identity, data.damage, ownerObj, targetVec, this.transform.position);
     }
 
     /// <summary>

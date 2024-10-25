@@ -17,9 +17,9 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
     public EnemyDataSO data;
     private EnemyAnimation anim;
     private EnemyController controller;
-    private FactroyManager fManager;
+    private FactroyManager factoryManager;
 
-    protected FactroyManager FManager { get => fManager; }
+    protected FactroyManager FactroyManager { get => factoryManager; }
 
     /// <summary>
     /// EnmeyController 접근용 프로퍼티
@@ -76,7 +76,7 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
     /// </summary>
     protected virtual void Init()
     {
-        fManager = FindAnyObjectByType<FactroyManager>();
+        factoryManager = FindAnyObjectByType<FactroyManager>();
 
         anim = GetComponent<EnemyAnimation>();
         controller = GetComponent<EnemyController>();

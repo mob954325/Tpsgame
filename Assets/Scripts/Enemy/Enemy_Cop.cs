@@ -26,7 +26,7 @@ public class Enemy_Cop : EnemyBase
         OnHitAction += (float damage) => 
         {
             Vector3 spawnPos = this.gameObject.transform.position + Vector3.up * 1.5f;
-            FManager.Billboard_Upward.SpawnBillboard(localManager.Player.transform, $"{damage}", spawnPos); 
+            FactroyManager.Billboard_Upward.SpawnBillboard(localManager.Player.transform, $"{damage}", spawnPos); 
         };
     }
 
@@ -50,7 +50,7 @@ public class Enemy_Cop : EnemyBase
 
             if(IsTargetInSight(targetDir)) // 시야 안에 target 오브젝트가 있으면 공격
             {
-                weapon.Controller.Shot(true, target.transform.position);
+                weapon.Controller.Shot(true, target.transform.position + Vector3.up);
             }
         }
         else
