@@ -237,12 +237,16 @@ public class Player : MonoBehaviour, IHealth
 
     public void OnDie()
     {
-        completedInitialize = false;
+        if (!completedInitialize)
+            return;
+
         anim.SetRigWeight(0f);
         StartCoroutine(OnDieCoroutine());
 
         OnDieAction?.Invoke();
         anim.TriggerOnDie();
+
+        completedInitialize = false; // 초기화 확인을 false로 해서 모든 입력 차단
     }
 
     private IEnumerator OnDieCoroutine()
