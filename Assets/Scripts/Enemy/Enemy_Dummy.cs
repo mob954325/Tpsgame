@@ -13,7 +13,8 @@ public class Enemy_Dummy : EnemyBase
         localManager = FindAnyObjectByType<LocalManager>();
         enemyInfoUI = FindAnyObjectByType<EnemyInfoUI>();
 
-        enemyInfoUI.SetName(data.name);
+        // UI init
+        enemyInfoUI.SetName(data.objName);
         enemyInfoUI.HpGauge_World.SetGauge(1);
         enemyInfoUI.SetLookAtTarget(localManager.Player.transform);
 
@@ -30,7 +31,7 @@ public class Enemy_Dummy : EnemyBase
         enemyInfoUI.HpGauge_World.SetGauge(Health / MaxHealth);
     }
 
-    void RegenHp()
+    private void RegenHp()
     {
         if (Health < 2)
         {

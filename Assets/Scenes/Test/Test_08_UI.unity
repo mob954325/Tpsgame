@@ -1350,15 +1350,65 @@ PrefabInstance:
       propertyPath: vCam
       value: 
       objectReference: {fileID: 882675220}
+    - target: {fileID: 4823168102538879927, guid: 37823c3f2bf7e314badc8daa54dafce1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4823168102538879927, guid: 37823c3f2bf7e314badc8daa54dafce1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.5000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4823168102538879927, guid: 37823c3f2bf7e314badc8daa54dafce1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.4999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4823168102538879927, guid: 37823c3f2bf7e314badc8daa54dafce1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.4999999
+      objectReference: {fileID: 0}
     - target: {fileID: 5586540737626402759, guid: 37823c3f2bf7e314badc8daa54dafce1,
         type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6132551813417153312, guid: 37823c3f2bf7e314badc8daa54dafce1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.53879845
+      objectReference: {fileID: 0}
+    - target: {fileID: 6132551813417153312, guid: 37823c3f2bf7e314badc8daa54dafce1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.4582851
+      objectReference: {fileID: 0}
+    - target: {fileID: 6132551813417153312, guid: 37823c3f2bf7e314badc8daa54dafce1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.538458
+      objectReference: {fileID: 0}
+    - target: {fileID: 6132551813417153312, guid: 37823c3f2bf7e314badc8daa54dafce1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.45796728
+      objectReference: {fileID: 0}
     - target: {fileID: 6781821356289079663, guid: 37823c3f2bf7e314badc8daa54dafce1,
         type: 3}
       propertyPath: m_Name
       value: Characters_Dummy
+      objectReference: {fileID: 0}
+    - target: {fileID: 8667338388113317867, guid: 37823c3f2bf7e314badc8daa54dafce1,
+        type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'Elbow_R'\n\tTransform 'Elbow_L'\n\tTransform
+        'Hand_L'\n\tTransform 'Shoulder_L'\n\tTransform 'Shoulder_R'\n\tTransform
+        'Hand_R'\n\tTransform 'Elbow_R'\n\tTransform 'Elbow_L'\n\tTransform 'Hand_L'\n\tTransform
+        'Shoulder_L'\n\tand more ..."
       objectReference: {fileID: 0}
     - target: {fileID: 8769685195909873441, guid: 37823c3f2bf7e314badc8daa54dafce1,
         type: 3}

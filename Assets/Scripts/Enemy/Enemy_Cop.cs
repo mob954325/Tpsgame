@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy_Cop : EnemyBase
 {
     private LocalManager localManager;
+    private EnemyInfoUI enemyInfoUI;
 
     private Weapon weapon;
     private Patrol patrol;
@@ -12,16 +13,14 @@ public class Enemy_Cop : EnemyBase
 
     protected override void Start()
     {
-        base.Start();
-
         localManager = FindAnyObjectByType<LocalManager>();
-
         Transform child = transform.GetChild(1);
         weapon = child.GetComponent<Weapon>();
-        weapon.Controller.SetOwner(this.gameObject);
-
+        child = transform.GetChild(2);
+        enemyInfoUI = child.GetComponent<EnemyInfoUI>();    
         patrol = FindAnyObjectByType<Patrol>();
-        Controller.SetDestination(patrol.GetPatrolPosition()); // navAgent 도착지 초기화
+
+        base.Start();
         
         OnHitAction += (float damage) => 
         {
@@ -63,6 +62,19 @@ public class Enemy_Cop : EnemyBase
                 Controller.SetDestination(patrolPos);
             }
         }
+
+        enemyInfoUI.HpGauge_World.SetGauge(Health / MaxHealth);
+    }
+
+    protected override void Init()
+    {
+        base.Init();
+
+        enemyInfoUI.SetName(data.objName);
+        enemyInfoUI.HpGauge_World.SetGauge(1);
+        enemyInfoUI.SetLookAtTarget(localManager.Player.transform);
+        weapon.Controller.SetOwner(this.gameObject);
+        Controller.SetDestination(patrol.GetPatrolPosition()); // navAgent 도착지 초기화
     }
 
     protected override void BeforeDisable()
