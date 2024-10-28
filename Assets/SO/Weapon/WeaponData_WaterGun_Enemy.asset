@@ -15,7 +15,9 @@ MonoBehaviour:
   weaponName: WaterGun
   damage: 2
   shotRange: 50
-  firePerSec: 0.1
+  firePerSec: 1
+  maxAmmo: 30
+  reloadTime: 0.1
   isProjectile: 1
   projectileObj: {fileID: 4585397673107026872, guid: 6c89d36218599f8419d054f9eb2e1005,
     type: 3}

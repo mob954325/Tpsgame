@@ -9,21 +9,18 @@ public class EnemyAnimation : MonoBehaviour
 
     int hashToDie = Animator.StringToHash("Die");
 
-    private void Awake()
+
+    public void Init()
     {
         anim = GetComponent<Animator>();
-    }
-
-    private void OnEnable()
-    {
         anim.enabled = true;
     }
-     
+
     /// <summary>
     /// 애니메이션 사망 트리거 함수
     /// </summary>
-    public void TriggerOnDead()
+    public void SetBoolOnDead(bool value)
     {
-        anim.SetTrigger(hashToDie);
+        anim.SetBool(hashToDie, value);
     }
 }

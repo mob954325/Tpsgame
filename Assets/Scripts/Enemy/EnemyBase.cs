@@ -12,14 +12,14 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(EnemyAnimation), typeof(EnemyController))]
-public abstract class EnemyBase : MonoBehaviour, IHealth
+public abstract class EnemyBase : Product, IHealth
 {
     public EnemyDataSO data;
     private EnemyAnimation anim;
     private EnemyController controller;
-    private FactroyManager factoryManager;
+    private FactoryManager factoryManager;
 
-    protected FactroyManager FactroyManager { get => factoryManager; }
+    protected FactoryManager FactroyManager { get => factoryManager; }
 
     /// <summary>
     /// EnmeyController 접근용 프로퍼티
@@ -35,7 +35,7 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
         {
             health = Mathf.Clamp(value, 0f, MaxHealth);
 
-            if(health == 0f) // 사망
+            if(health <= 0f) // 사망
             {
                 health = 0f;
                 OnDie();
@@ -58,15 +58,26 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
 
     // 유니티 ========================================================================
 
-    protected virtual void Start()
+    protected virtual void OnEnable()
     {
-        Init();
+        factoryManager = FindAnyObjectByType<FactoryManager>();
+        anim = GetComponent<EnemyAnimation>();
+        controller = GetComponent<EnemyController>();
+
+        Health = MaxHealth;
     }
 
-    protected virtual void OnDisable()
+    protected virtual void Start()
     {
-        OnDieAction -= anim.TriggerOnDead;
-        OnDieAction -= controller.DeactiveCollider;
+
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        OnHitAction = null;
+        OnDieAction = null;
     }
 
     // 기능 ========================================================================
@@ -76,14 +87,11 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
     /// </summary>
     protected virtual void Init()
     {
-        factoryManager = FindAnyObjectByType<FactroyManager>();
-
-        anim = GetComponent<EnemyAnimation>();
-        controller = GetComponent<EnemyController>();
         controller.Init(data);
+        anim.Init();
 
-        OnDieAction += anim.TriggerOnDead;
-        OnDieAction += controller.DeactiveCollider;
+        controller.SetActiveCollider(true);
+        OnDieAction += () => { controller.SetActiveCollider(false); };
 
         MaxHealth = data.maxHealth;
         Health = MaxHealth;
@@ -94,8 +102,9 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
     public void OnDie()
     {
         OnDieAction?.Invoke();
+        anim.SetBoolOnDead(true);
         StartCoroutine(OnDieCoroutine());
-        Debug.Log($"{gameObject.name}이(가) 죽었습니다.");        
+        //Debug.Log($"{gameObject.name}이(가) 죽었습니다.");        
     }
 
     /// <summary>
@@ -112,6 +121,7 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
         }
 
         BeforeDisable();
+        anim.SetBoolOnDead(false);
         this.gameObject.SetActive(false);
     }
 
@@ -120,16 +130,15 @@ public abstract class EnemyBase : MonoBehaviour, IHealth
     /// </summary>
     protected virtual void BeforeDisable()
     {
-
     }
 
     public void OnHit(float damageValue)
-    {
-        if (health <= 0)
+    {    
+        if (Health <= 0)
             return;
 
-        Health -= damageValue;
         OnHitAction?.Invoke(damageValue);
+        Health -= damageValue;
     }
 
     /// <summary>

@@ -1869,7 +1869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movePower: 5
   jumpPower: 5
-  sensitivity: 5
+  sensitivity: 7
   sprintRatio: 1.2
   completedInitialize: 0
   health: 10

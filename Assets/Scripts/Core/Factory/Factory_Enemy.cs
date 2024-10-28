@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Factory_Enemy : MonoBehaviour
+public class Factory_Enemy : Factory<EnemyBase>
 {
-    // Start is called before the first frame update
-    void Start()
+    private LocalManager manager;
+
+    private void Start()
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public EnemyBase EnemySpawn(Vector3? pos = null, Quaternion? rot = null, float score = 1f)
     {
-        
+        EnemyBase enemy = SpawnProduct(pos, rot);
+/*        enemy.OnDeactive += () => 
+        {
+            manager = FindAnyObjectByType<LocalManager>();
+            manager.SetScore(score); 
+        };*/
+
+        return enemy;
     }
 }

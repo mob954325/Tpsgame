@@ -5,8 +5,7 @@ using UnityEngine;
 public class HpGauge_World : MonoBehaviour
 {
     Transform hpGauge;
-
-    private void Awake()
+    public void Init()
     {
         hpGauge = transform.GetChild(1);
     }

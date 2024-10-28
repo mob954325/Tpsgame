@@ -32,7 +32,6 @@ public class HitEffect : MonoBehaviour
         {
             timer -= Time.deltaTime;
             image.color = new Color(image.color.r, image.color.g, image.color.b, hitAnimCurve.Evaluate(timer / maxActiveTime));
-            Debug.Log(timer / maxActiveTime);
         }
     }
 }

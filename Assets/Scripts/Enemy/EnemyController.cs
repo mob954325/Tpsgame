@@ -13,19 +13,16 @@ public class EnemyController : MonoBehaviour
 
     public Action OnAttack;
 
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-        coll = GetComponent<Collider>();
-        navAgent = GetComponent<NavMeshAgent>();
-    }
-
     /// <summary>
     /// 적 컨트롤 스크립트 초기화 함수 (Awake 이후 실행)
     /// </summary>
     /// <param name="data">적 데이터</param>
     public void Init(EnemyDataSO data)
     {
+        rb = GetComponent<Rigidbody>();
+        coll = GetComponent<Collider>();
+        navAgent = GetComponent<NavMeshAgent>();
+
         navAgent.speed = data.moveSpeed;
     }
 
@@ -63,7 +60,6 @@ public class EnemyController : MonoBehaviour
     /// <returns>도달했으면 true 아니면 false</returns>
     public bool CheckReachDestination()
     {
-        Debug.Log(navAgent.remainingDistance);
         return navAgent.remainingDistance < navAgent.stoppingDistance; 
     }
 
@@ -75,8 +71,8 @@ public class EnemyController : MonoBehaviour
     /// <summary>
     /// 콜라이더 비활성화 함수
     /// </summary>
-    public void DeactiveCollider()
+    public void SetActiveCollider(bool value)
     {
-        coll.enabled = false;   
+        coll.enabled = value;   
     }
 }

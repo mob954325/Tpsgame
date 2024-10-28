@@ -11,26 +11,16 @@ public class Enemy_Cop : EnemyBase
     private Patrol patrol;
     private GameObject target;
 
-    protected override void Start()
+    protected override void OnEnable()
     {
-        localManager = FindAnyObjectByType<LocalManager>();
-        Transform child = transform.GetChild(1);
-        weapon = child.GetComponent<Weapon>();
-        child = transform.GetChild(2);
-        enemyInfoUI = child.GetComponent<EnemyInfoUI>();    
-        patrol = FindAnyObjectByType<Patrol>();
-
-        base.Start();
-        
-        OnHitAction += (float damage) => 
-        {
-            Vector3 spawnPos = this.gameObject.transform.position + Vector3.up * 1.5f;
-            FactroyManager.Billboard_Upward.SpawnBillboard(localManager.Player.transform, $"{damage}", spawnPos); 
-        };
+        base.OnEnable();
+        Init();
     }
 
     private void FixedUpdate()
     {
+        Debug.Log($"{this.gameObject.name} : {Health}");
+
         if (Health <= 0)
             return;
 
@@ -70,16 +60,41 @@ public class Enemy_Cop : EnemyBase
     {
         base.Init();
 
+        localManager = FindAnyObjectByType<LocalManager>();
+        Transform child = transform.GetChild(1);
+        weapon = child.GetComponent<Weapon>();
+        child = transform.GetChild(2);
+        enemyInfoUI = child.GetComponent<EnemyInfoUI>();
+        patrol = FindAnyObjectByType<Patrol>();
+
+        patrol.Init();
+
+        enemyInfoUI.Init();
         enemyInfoUI.SetName(data.objName);
         enemyInfoUI.HpGauge_World.SetGauge(1);
         enemyInfoUI.SetLookAtTarget(localManager.Player.transform);
+
         weapon.Controller.SetOwner(this.gameObject);
+
         Controller.SetDestination(patrol.GetPatrolPosition()); // navAgent 도착지 초기화
+
+        OnHitAction += (float damage) =>
+        {
+            Vector3 spawnPos = this.gameObject.transform.position + Vector3.up * 1.5f;
+            FactroyManager.Billboard_Upward.SpawnBillboard(localManager.Player.transform, $"-{damage}", spawnPos);
+        };
+
+        OnDieAction += () =>
+        {
+            enemyInfoUI.gameObject.SetActive(false);
+        };
     }
 
     protected override void BeforeDisable()
     {
         Controller.SetStopObject(true);
+        enemyInfoUI.gameObject.SetActive(true);
+
         target = null;
     }
 }

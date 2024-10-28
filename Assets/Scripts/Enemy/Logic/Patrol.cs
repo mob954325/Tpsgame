@@ -11,7 +11,7 @@ public class Patrol : MonoBehaviour
     private Transform[] patrolPositions;
     private int curPosition = 0;
 
-    private void Awake()
+    public void Init()
     {
         patrolPositions = new Transform[transform.childCount];
 

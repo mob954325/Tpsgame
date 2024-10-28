@@ -8,6 +8,7 @@ public class Test_05_Factory : TestBase
 {
     public Factory_Billboard factory;
     public Factory_Billboard_Upward factory2;
+    public Factory_Enemy factory3;
     public Transform lookTarget;
     public Transform spawnPoint;
 
@@ -26,6 +27,11 @@ public class Test_05_Factory : TestBase
     {
         string str = $"Test Text2";
         factory2.SpawnBillboard(lookTarget, str, spawnPoint.position, Quaternion.identity);
+    }
+
+    protected override void OnTest3(InputAction.CallbackContext context)
+    {
+        factory3.EnemySpawn(spawnPoint.position, Quaternion.identity);
     }
 }
 #endif

@@ -7,7 +7,7 @@ public class Product : MonoBehaviour
 {
     public Action OnDeactive;
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         OnDeactive?.Invoke();
     }

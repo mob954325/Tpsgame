@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
-    private FactroyManager factoryManager;
+    private FactoryManager factoryManager;
     public WeaponDataSO data;
 
     private GameObject ownerObj;
@@ -79,11 +79,10 @@ public class WeaponController : MonoBehaviour
 
     private void Awake()
     {
-        factoryManager = FindAnyObjectByType<FactroyManager>();
+        factoryManager = FindAnyObjectByType<FactoryManager>();
         shotTransform = transform.GetChild(0);
         shotEffect = shotTransform.GetChild(0);
 
-        CheckCanShot = false;
         Init();
     }
 
@@ -94,6 +93,8 @@ public class WeaponController : MonoBehaviour
         fireRate = data.firePerSec;
         isProjectile = data.isProjectile;
         CurAmmo = data.maxAmmo;
+
+        CheckCanShot = true;
     }
 
     /// <summary>

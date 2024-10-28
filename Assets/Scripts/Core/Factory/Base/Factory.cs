@@ -57,6 +57,7 @@ public class Factory<T> : MonoBehaviour where T : Product
         }
 
         T curProduct = readyQueue.Dequeue();
+        curProduct.OnDeactive = null; // 재활용을 위한 델리게이트 초기화
         curProduct.OnDeactive += () => { readyQueue.Enqueue(curProduct); }; // 비활성화 시 다시 큐로 복귀
 
         GameObject obj = curProduct.gameObject;

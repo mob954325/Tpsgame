@@ -70,7 +70,7 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.Disable();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (!inputActions.Player.enabled)
             return;

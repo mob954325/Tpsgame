@@ -17,10 +17,17 @@ public class Projectile : Product
     [SerializeField]bool isInstantiate = false;
 
     Rigidbody rigid;
+    TrailRenderer trailRenderer;
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
+        trailRenderer = GetComponentInChildren<TrailRenderer>();
+    }
+
+    private void OnEnable()
+    {
+        trailRenderer.Clear();
     }
 
     private void Start()

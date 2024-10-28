@@ -11,10 +11,11 @@ public class EnemyInfoUI : MonoBehaviour
 
     public HpGauge_World HpGauge_World { get => hpGauge; }
 
-    private void Awake()
+    public void Init()
     {
         objNameText = GetComponentInChildren<TextMeshPro>();
         hpGauge = GetComponentInChildren<HpGauge_World>();
+        hpGauge.Init();
     }
 
     private void FixedUpdate()
