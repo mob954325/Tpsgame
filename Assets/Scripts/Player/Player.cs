@@ -65,7 +65,7 @@ public class Player : MonoBehaviour, IHealth
             }
             else
             {
-                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.lockState = CursorLockMode.None;
             }
         }
     }
@@ -246,6 +246,7 @@ public class Player : MonoBehaviour, IHealth
         OnDieAction?.Invoke();
         anim.TriggerOnDie();
 
+        MouseLock = false;
         completedInitialize = false; // 초기화 확인을 false로 해서 모든 입력 차단
     }
 

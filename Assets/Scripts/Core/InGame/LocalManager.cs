@@ -7,6 +7,7 @@ public class LocalManager : MonoBehaviour
 {
     private FactoryManager factroyManager;
     private Player player;
+    private ResultScreen resultScreen;
 
     public Player Player { get => player; }
     public FactoryManager FactoryManager { get => factroyManager; }
@@ -34,10 +35,13 @@ public class LocalManager : MonoBehaviour
     {
         player = FindAnyObjectByType<Player>();
         factroyManager = FindAnyObjectByType<FactoryManager>();
+        resultScreen = FindAnyObjectByType<ResultScreen>();
     }
 
     private void Start()
     {
+        player.OnDieAction += resultScreen.AciveObj;
+
         Score = 0f;
         isGameStart = true;
     }
