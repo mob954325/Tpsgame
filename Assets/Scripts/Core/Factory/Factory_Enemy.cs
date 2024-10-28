@@ -8,16 +8,16 @@ public class Factory_Enemy : Factory<EnemyBase>
 
     private void Start()
     {
+        manager = FindAnyObjectByType<LocalManager>();        
     }
 
     public EnemyBase EnemySpawn(Vector3? pos = null, Quaternion? rot = null, float score = 1f)
     {
         EnemyBase enemy = SpawnProduct(pos, rot);
-/*        enemy.OnDeactive += () => 
+        enemy.OnDieAction += () =>
         {
-            manager = FindAnyObjectByType<LocalManager>();
-            manager.SetScore(score); 
-        };*/
+            manager.SetScore(score);
+        };
 
         return enemy;
     }

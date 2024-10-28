@@ -34,31 +34,18 @@ public class LocalManager : MonoBehaviour
     {
         player = FindAnyObjectByType<Player>();
         factroyManager = FindAnyObjectByType<FactoryManager>();
+    }
 
+    private void Start()
+    {
         Score = 0f;
         isGameStart = true;
     }
 
     public void SetScore(float setScore)
     {
-        StartCoroutine(SetScoreCoroutine(setScore));
+        Score += setScore;
     }
-
-    private IEnumerator SetScoreCoroutine(float setScore)
-    {
-        float timeElapsed = 0.0f;
-        float scrollingSpeed = 2f;
-        float maxTime = 1 / scrollingSpeed;
-
-        while (timeElapsed < maxTime)
-        {
-            timeElapsed += Time.deltaTime * scrollingSpeed;
-            Mathf.Lerp(Score, Score + setScore, timeElapsed);
-
-            yield return null;  
-        }        
-    }
-
 
 #if UNITY_EDITOR
     private void Test_Setting()

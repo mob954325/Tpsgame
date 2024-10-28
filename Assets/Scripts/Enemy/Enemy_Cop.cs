@@ -19,8 +19,6 @@ public class Enemy_Cop : EnemyBase
 
     private void FixedUpdate()
     {
-        Debug.Log($"{this.gameObject.name} : {Health}");
-
         if (Health <= 0)
             return;
 
