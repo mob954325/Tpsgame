@@ -16,5 +16,7 @@ MonoBehaviour:
   damage: 1
   shotRange: 50
   firePerSec: 0.1
+  maxAmmo: 10
+  reloadTime: 0.5
   isProjectile: 0
   projectileObj: {fileID: 0}

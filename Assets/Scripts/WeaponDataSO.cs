@@ -31,6 +31,16 @@ public class WeaponDataSO : ScriptableObject
     public float firePerSec = 0.3f;
 
     /// <summary>
+    /// 최대 총알 수 
+    /// </summary>
+    public int maxAmmo = 10;
+
+    /// <summary>
+    /// 재장전 시간
+    /// </summary>
+    public float reloadTime = 1f;
+
+    /// <summary>
     /// 투사체인지 확인하는 변수
     /// </summary>
     public bool isProjectile = false;

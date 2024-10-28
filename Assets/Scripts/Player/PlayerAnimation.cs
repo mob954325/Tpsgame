@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Animations;
+using UnityEngine.Animations.Rigging;
 
 
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimation : MonoBehaviour
 {
     private Animator anim;
+    private Rig rig;
 
     /// <summary>
     /// 플레이어 x좌표 값 애니메이션 파라미터
@@ -44,9 +46,15 @@ public class PlayerAnimation : MonoBehaviour
     /// </summary>
     int HashToOnShot = Animator.StringToHash("onShot");
 
+    /// <summary>
+    /// 사망 트리거 애니메잇녀 파라미터
+    /// </summary>
+    int HashToOnDie = Animator.StringToHash("Die");
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        rig = GetComponentInChildren<Rig>();
     }
 
     /// <summary>
@@ -109,5 +117,22 @@ public class PlayerAnimation : MonoBehaviour
     public void TriggerOnShot()
     {
         anim.SetTrigger(HashToOnShot);
+    }
+
+    /// <summary>
+    /// 애니메이션 사망 트리거 작동 함수
+    /// </summary>
+    public void TriggerOnDie()
+    {
+        anim.SetTrigger(HashToOnDie);
+    }
+
+    /// <summary>
+    /// 무기에 리깅된 강도 조절 함수
+    /// </summary>
+    /// <param name="value">0 - 1 사이의 값</param>
+    public void SetRigWeight(float value)
+    {
+        rig.weight = value;
     }
 }

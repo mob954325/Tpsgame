@@ -35,4 +35,9 @@ public class Weapon : MonoBehaviour
             return controller;
         }
     }
+
+    public int GetMaxAmmo()
+    {
+        return Controller.data.maxAmmo;
+    }
 }

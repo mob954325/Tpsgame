@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +27,27 @@ public class WeaponController : MonoBehaviour
     /// </summary>
     private float fireRate = 1f;
 
+    private int curAmmo = -1;
+
+    /// <summary>
+    /// 총알 접근 프로퍼티
+    /// </summary>
+    public int CurAmmo
+    {
+        get => curAmmo;
+        private set
+        {
+            curAmmo = Mathf.Clamp(value, 0, data.maxAmmo);
+            OnAmmoReduce?.Invoke(value);
+
+            if (curAmmo <= 0)
+            {
+                CheckCanShot = false;
+                StartCoroutine(ReloadCoroutine());
+            }
+        }
+    }
+
     /// <summary>
     /// 투사체 형태 공격인지 체크하는 변수 (투사체면 true, 히트스캔이면 false)
     /// </summary>
@@ -50,6 +72,11 @@ public class WeaponController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 총알 감소 시 호출되는 델리게이트 (param : 감소 후 남은 총알 개수)
+    /// </summary>
+    public Action<int> OnAmmoReduce;
+
     private void Awake()
     {
         factoryManager = FindAnyObjectByType<FactroyManager>();
@@ -66,6 +93,16 @@ public class WeaponController : MonoBehaviour
         shotRange = data.shotRange;
         fireRate = data.firePerSec;
         isProjectile = data.isProjectile;
+        CurAmmo = data.maxAmmo;
+    }
+
+    /// <summary>
+    /// 무기 주인 오브젝트 설정
+    /// </summary>
+    /// <param name="obj">IHealth가 있는 오브젝트</param>
+    public void SetOwner(GameObject obj)
+    {
+        ownerObj = obj;
     }
 
     /// <summary>
@@ -87,6 +124,7 @@ public class WeaponController : MonoBehaviour
         }
 
         CheckCanShot = false; // 사격 후 사격 비활성화
+        CurAmmo--;
     }
 
     private void HitScanShot()
@@ -141,12 +179,17 @@ public class WeaponController : MonoBehaviour
         CheckCanShot = true;
     }
 
-    /// <summary>
-    /// 무기 주인 오브젝트 설정
-    /// </summary>
-    /// <param name="obj">IHealth가 있는 오브젝트</param>
-    public void SetOwner(GameObject obj)
+    private IEnumerator ReloadCoroutine()
     {
-        ownerObj = obj;
+        float timeElapsed = 0f;
+
+        while(timeElapsed < data.reloadTime)
+        {
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        CurAmmo = data.maxAmmo;
+        CheckCanShot = true;
     }
 }

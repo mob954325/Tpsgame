@@ -14,6 +14,11 @@ public class Player : MonoBehaviour, IHealth
     private PlayerAnimation anim;
     private Weapon weapon;
 
+    public Weapon Weapon
+    {
+        get => weapon;
+    }
+
     /// <summary>
     /// 움직임 속도
     /// </summary>
@@ -66,6 +71,7 @@ public class Player : MonoBehaviour, IHealth
     }
 
     public float health = 10f;
+
     public float Health 
     { 
         get => health; 
@@ -94,6 +100,16 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     public Action<bool> OnWeaponShot;
 
+    private void Awake()
+    {
+        input = GetComponent<PlayerInput>();
+        contoller = GetComponent<PlayerContoller>();
+        anim = GetComponent<PlayerAnimation>();
+        weapon = GetComponentInChildren<Weapon>();
+
+        Health = MaxHealth;
+    }
+
     private void Start()
     {
         Init();
@@ -104,18 +120,21 @@ public class Player : MonoBehaviour, IHealth
     /// </summary>
     private void Init()
     {
-        input = GetComponent<PlayerInput>();
-        contoller = GetComponent<PlayerContoller>();
-        anim = GetComponent<PlayerAnimation>();
-        weapon = GetComponentInChildren<Weapon>();
-
         weapon.Init(this.gameObject);
 
         input.OnMove += OnPlayerMove;
         input.OnLook += OnPlayerLook;
         input.OnJump += OnPlayerJump;
         input.OnShot += OnPlayerShot;
-        input.OnShot += (boolean) => { weapon.Controller.Shot(boolean, transform.forward * 1f); };
+        input.OnShot += (boolean) => 
+        { 
+            if(weapon.Controller.CurAmmo > 0)
+            {
+                weapon.Controller.Shot(boolean, transform.forward * 1f);
+                anim.TriggerOnShot();
+            }
+        };
+
         input.OnZoomIn += OnPlayerZoomIn;
 
         // 초기화 확인
@@ -196,7 +215,6 @@ public class Player : MonoBehaviour, IHealth
 
         if (isShot)
         {
-            anim.TriggerOnShot();
             OnWeaponShot?.Invoke(isShot);
         }
     }
@@ -213,12 +231,30 @@ public class Player : MonoBehaviour, IHealth
 
     public void OnHit(float damageValue)
     {
-        OnHitAction?.Invoke(damageValue);
         Health -= damageValue;
+        OnHitAction?.Invoke(damageValue);
     }
 
     public void OnDie()
     {
+        completedInitialize = false;
+        anim.SetRigWeight(0f);
+        StartCoroutine(OnDieCoroutine());
+
         OnDieAction?.Invoke();
+        anim.TriggerOnDie();
+    }
+
+    private IEnumerator OnDieCoroutine()
+    {
+        float timeElapsed = 0.0f;
+
+        while(timeElapsed < 2f)
+        {
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        gameObject.SetActive(false);
     }
 }
