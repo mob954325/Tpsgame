@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8691521356127424786
 Transform:
   m_ObjectHideFlags: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originalProduct: {fileID: 4585397673107026872, guid: 6c89d36218599f8419d054f9eb2e1005,
     type: 3}
-  capacity: 8
+  capacity: 128
 --- !u!1 &4951810621844110001
 GameObject:
   m_ObjectHideFlags: 0

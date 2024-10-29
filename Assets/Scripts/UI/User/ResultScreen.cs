@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class ResultScreen : MonoBehaviour
 {
     private Button lobbyBtn;
     private LocalManager manager;
     private TextMeshProUGUI resultText;
+    private CanvasGroup canvas;
 
     private void Awake()
     {
@@ -23,12 +24,22 @@ public class ResultScreen : MonoBehaviour
         manager = FindAnyObjectByType<LocalManager>();
         manager.OnGameEnd += AciveObj;
 
-        this.gameObject.SetActive(false);
+        canvas = GetComponent<CanvasGroup>();
+    }
+
+    private void OnEnable()
+    {
+        canvas.alpha = 0f;
+        canvas.interactable = false;
+        canvas.blocksRaycasts = false;
     }
 
     public void AciveObj()
     {
-        this.gameObject.SetActive(true);
+        canvas.alpha = 1f;
+        canvas.interactable = true;
+        canvas.blocksRaycasts = true;
+
         resultText.text = $"Result : {manager.Score}";
     }
 

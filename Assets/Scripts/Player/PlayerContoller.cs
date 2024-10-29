@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using UnityEditor.Timeline;
-using UnityEngine.Windows;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerContoller : MonoBehaviour

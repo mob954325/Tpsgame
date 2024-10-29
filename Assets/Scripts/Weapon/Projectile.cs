@@ -28,11 +28,10 @@ public class Projectile : Product
     private void OnEnable()
     {
         trailRenderer.Clear();
-    }
+        rigid.velocity = Vector3.zero;
+        rigid.angularVelocity = Vector3.zero;
 
-    private void Start()
-    {
-        OnDeactive += ResetSetting;
+        ResetSetting();
     }
 
     private void FixedUpdate()

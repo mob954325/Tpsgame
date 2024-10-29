@@ -41,7 +41,11 @@ public class LocalManager : MonoBehaviour
         private set
         {
             isGameStart = value;
-            OnGameEnd?.Invoke();
+
+            if(!isGameStart)
+            {
+                OnGameEnd?.Invoke();
+            }
         }
     }
 
