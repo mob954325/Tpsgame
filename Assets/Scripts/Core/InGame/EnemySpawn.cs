@@ -8,7 +8,6 @@ public class EnemySpawn : MonoBehaviour
     LocalManager localManager;
     Transform[] spawnPosition;
 
-    private int enemyTypeCount = 2;
     public float maxTimer = 2f;
     private float timer = -1f;
 
