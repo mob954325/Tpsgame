@@ -11,9 +11,10 @@ public class Enemy_Dummy : EnemyBase
     {
         base.Start();
         localManager = FindAnyObjectByType<LocalManager>();
-        enemyInfoUI = FindAnyObjectByType<EnemyInfoUI>();
+        enemyInfoUI = transform.GetChild(2).GetComponent<EnemyInfoUI>();
 
         // UI init
+        enemyInfoUI.Init();
         enemyInfoUI.SetName(data.objName);
         enemyInfoUI.HpGauge_World.SetGauge(1);
         enemyInfoUI.SetLookAtTarget(localManager.Player.transform);

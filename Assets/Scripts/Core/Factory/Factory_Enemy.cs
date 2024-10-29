@@ -14,10 +14,9 @@ public class Factory_Enemy : Factory<EnemyBase>
     public EnemyBase EnemySpawn(Vector3? pos = null, Quaternion? rot = null, float score = 1f)
     {
         EnemyBase enemy = SpawnProduct(pos, rot);
-        enemy.OnDieAction += () =>
-        {
-            manager.SetScore(score);
-        };
+
+        enemy.OnDieAction += () => { manager.SetScore(score); };
+        manager.OnGameEnd += () => { enemy.gameObject.SetActive(false); };
 
         return enemy;
     }

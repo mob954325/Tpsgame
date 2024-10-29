@@ -35,13 +35,21 @@ public class LocalManager : MonoBehaviour
     }
 
     public bool isGameStart = false;
-    public bool IsGameStart { get => isGameStart; }
+    public bool IsGameStart 
+    { 
+        get => isGameStart;
+        private set
+        {
+            isGameStart = value;
+            OnGameEnd?.Invoke();
+        }
+    }
 
     private float score = -1f;
-    private float Score
+    public float Score
     {
         get => score;
-        set
+        private set
         {
             score = value;
             OnScoreChange?.Invoke(score);
@@ -53,10 +61,21 @@ public class LocalManager : MonoBehaviour
     /// </summary>
     public Action<float> OnScoreChange;
 
+    public Action OnGameEnd;
+
     private void Start()
     {
         Score = 0f;
-        isGameStart = true;
+        IsGameStart = true;
+
+        Player.OnDieAction += () => { IsGameStart = false; };
+
+#if UNITY_EDITOR
+        if(isTest)
+        {
+            IsGameStart = false;
+        }
+#endif
     }
 
     public void SetScore(float setScore)
@@ -65,6 +84,10 @@ public class LocalManager : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+
+    [Header("test")]
+    public bool isTest = false;
+    
     private void Test_Setting()
     {
         isGameStart = false;
