@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponName: WaterPistol
   damage: 1
   shotRange: 30
-  firePerSec: 0.3
+  firePerSec: 1
   maxAmmo: 10
   reloadTime: 0.3
   isProjectile: 1
